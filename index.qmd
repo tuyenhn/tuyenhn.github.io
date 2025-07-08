@@ -1,7 +1,17 @@
----
-title: "tuyenhn.github.io"
----
+# Hi! I'm [Tuyen Huynh]{.underline}
 
-This is a Quarto website.
+- pronunciation: *"tween"*
+- Vietnamese script and order: Huỳnh Ngọc Tuyên
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+# I am ...
+- a PhD student, registered with the University of Oxford, Nuffield Department of Medicine. Member of the Brasenose College.
+
+# I have ...
+- a background in Computer Science and Information Technology with a Bachelor in Information Technology at RMIT University Vietnam (2019-2022)
+
+# You can find me on ...
+- [LinkedIn](https://www.linkedin.com/in/tuyen-h-520a1b125/) (Tuyen Huynh)
+- [ORCiD](https://orcid.org/my-orcid?orcid=0009-0009-4878-8953) (0009-0009-4878-8953)
+
+# You can reach me by ...
+- email: <tuyenhn@oucru.org>
