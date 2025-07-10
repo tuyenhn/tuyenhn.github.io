@@ -1,0 +1,19 @@
+- title: "A new lineage nomenclature to aid genomic surveillance of dengue virus"
+  tags: ["publication", "dengue"]
+  roles: ["co-author"]
+  url: "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002834"
+
+- title: "Fine-tuning large language models for improved health communication in low-resource languages"
+  tags: ["publication", "rmit"]
+  roles: ["co-author", "co-supervisor"]
+  url: "https://www.sciencedirect.com/science/article/pii/S0169260725000720"
+
+- title: "GRAPEVNE-Graphical Analytical Pipeline Development Environment for Infectious Diseases"
+  tags: ["publication", "software"]
+  roles: ["co-author", "contributor"]
+  url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12205304/"
+
+- title: "OUCRU R training 2025"
+  tags: ["training", "oucru", "r"]
+  roles: ["co-organiser", "instructor"]
+  url: "https://oucru-modelling.github.io/R-training-2025/"

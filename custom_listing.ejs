@@ -1,0 +1,93 @@
+```{=html}
+
+<% const colorMap={ publication: 'gray' , dengue: 'red' , software: 'blue' , training: 'green' , oucru: 'amber' ,
+  rmit: 'yellow' , r: 'cyan' }; %>
+
+  <div id="thing-list" class="grid grid-cols-3! gap-2 grid-flow-row md:grid-cols-1">
+    <% for (const thing of items) { %>
+
+      <div class="border rounded-lg p-3 transition hover:shadow hover:border-none"
+        data-tags="<%= thing.tags.join(',') %>">
+        <div class="block">
+          <% for (const tag of thing.tags) { %>
+            <div class="inline-block relative py-1 text-xs">
+              <div class="absolute inset-0 text-<%= colorMap[tag] %>-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                  <path
+                    d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                    fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-<%= colorMap[tag] %>-200 rounded-md rounded-l-none"></div>
+              </div>
+              <span class="relative text-<%= colorMap[tag] %>-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <%= tag %>
+                  <span>&nbsp;</span>
+              </span>
+            </div>
+            <% } %>
+        </div>
+        <div class="block font-bold text-xl">
+          <%= thing.title %>
+        </div>
+        <div class="block">
+          Role(s):
+          <% for (const role of thing.roles) { %>
+            <span class="thing-role">
+              <%= role %>
+            </span>
+            <% } %>
+
+        </div>
+        <div class="block text-xs">
+          <a href="<%- thing.url %>">link</a>
+        </div>
+      </div>
+
+      <% } %>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const things = Array.from(document.getElementById("thing-list").children);
+      const tagButtonContainer = document.getElementById("tag-buttons");
+
+      // Collect all unique tags
+      const tagSet = new Set();
+      things.forEach(thing => {
+        const tags = thing.dataset.tags.split(",");
+        tags.forEach(tag => tagSet.add(tag.trim()));
+      });
+
+      const createTagButton = (tag) => {
+        const btn = document.createElement("button");
+        btn.textContent = tag;
+        btn.className = "thing-pill-span cursor-pointer";
+        btn.onclick = () => {
+          things.forEach(thing => {
+            const tags = thing.dataset.tags.split(",");
+            const visible = tags.includes(tag);
+            thing.style.display = visible ? "block" : "none";
+          });
+        };
+        return btn;
+      };
+
+      // "All" button
+      const allBtn = document.createElement("button");
+      allBtn.textContent = "All";
+      allBtn.className = "thing-pill-span font-bold cursor-pointer";
+      allBtn.onclick = () => {
+        things.forEach(thing => thing.style.display = "block");
+      };
+      tagButtonContainer.appendChild(allBtn);
+
+      // Tag buttons
+      Array.from(tagSet).sort().forEach(tag => {
+        const btn = createTagButton(tag);
+        tagButtonContainer.appendChild(btn);
+      });
+    });
+  </script>
+
+  ```

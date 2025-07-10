@@ -1,25 +1,40 @@
+---
+listing: 
+  - id: my-listings
+    template: custom_listing.ejs
+    contents: things.yml
+---
+
 # Hi! I'm [Tuyen Huynh]{.underline}
 
 - pronunciation: *"tween"*
 - Vietnamese script and order: Huỳnh Ngọc Tuyên
 
-# I am ...
-- a PhD student, registered with the University of Oxford, Nuffield Department of Medicine. Member of the Brasenose College
+# 👨‍🎓 I am ...
+- a PhD student, registered with the University of Oxford, Nuffield Department of Medicine; part of the Brasenose College (Apr 2023 - Apr 2027) 
 - interested in building Machine Learning models and pipelines for infectious disease forecasting, along with stakeholder engagement
 - currently working on building models for dengue forecasting, part of a project called [DART](https://www.dartdengue.org) - Dengue Advanced Readiness Tools
 - physically based in the Mathematical Modelling group of the Oxford University Clinical Research Unit (OUCRU), Ho Chi Minh City, Viet Nam 
 - supervised by Dr. Marc Choisy, Assoc. Prof. Sophie Yacoub, Assoc. Prof. Sarah Sparrow, and Prof. Moritz Kraemer
 
-# I have ...
+# 💼 I have ...
 - a background in Computer Science and Information Technology with a Bachelor in Information Technology at RMIT University Vietnam (2019-2022)
-- worked as a Research Assistant (Software Developer) the Mathematical Modelling group at OUCRU
+- worked as a Research Assistant (Software Developer) the Mathematical Modelling group at OUCRU (Aug 2022 - Mar 2023)
 
-# You can find me on ...
+# @ You can find me on ...
 - [LinkedIn](https://www.linkedin.com/in/tuyen-h-520a1b125/) (Tuyen Huynh)
 - [ORCiD](https://orcid.org/my-orcid?orcid=0009-0009-4878-8953) (0009-0009-4878-8953)
 - [OUCRU profile](https://www.oucru.org/people/huynh-ngoc-tuyen/)
 
-# You can reach me through my ...
+# 📫 You can reach me through ...
 - OUCRU email: <tuyenhn@oucru.org>
 - Oxford email: <bras5568@ox.ac.uk>
 
+# Some of the things I worked on:
+```{=html}
+
+<div id="tag-buttons" class="flex flex-wrap gap-2 my-4"></div>
+
+```
+::: {#my-listings}
+:::

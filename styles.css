@@ -1,1 +1,17 @@
-/* css styles */
+@import "tailwindcss";
+
+@source inline("text-{gray,red,blue,green,amber,yellow,cyan}-200");
+@source inline("bg-{gray,red,blue,green,amber,yellow,cyan}-200");
+@source inline("text-{gray,red,blue,green,amber,yellow,cyan}-500");
+
+body {
+    font-family: 'Noto Serif', 'Courier New', Courier, monospace
+}
+
+ul {
+    @apply list-disc;
+}
+
+.thing-pill-span {
+    @apply inline-flex text-gray-600 bg-gray-50 ring-gray-500/10 items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset;
+}
