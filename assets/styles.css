@@ -1,11 +1,11 @@
 @import 'tailwindcss';
 
 body {
-  @apply tracking-wide font-[Yomogi] font-normal bg-cyan-100
+  @apply tracking-wide font-[Yomogi] font-normal bg-cyan-100;
 }
 
 #innerBody {
-  @apply mx-56 px-10 py-10 bg-cyan-50
+  @apply px-10 py-10 bg-cyan-50 lg:mx-56 mx-36;
 }
 
 section {
@@ -13,6 +13,11 @@ section {
     @apply text-4xl mb-2;
   }
   li {
-    @apply list-disc my-0.5 text-lg;   
+    @apply list-disc my-0.5 text-lg;
+
+    a {
+      @apply underline text-blue-500
+    }
+
   }
 }
