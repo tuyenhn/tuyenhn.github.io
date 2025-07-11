@@ -5,6 +5,9 @@ import * as runtime from "react/jsx-runtime";
 import postcssPlugin from "@jgarber/eleventy-plugin-postcss";
 
 export default async function (eleventyConfig) {
+    // Set ouput dir (`docs` for GH Pages)
+    eleventyConfig.setOutputDirectory("docs");
+
     // Plugins
     eleventyConfig.addPlugin(postcssPlugin);
 
