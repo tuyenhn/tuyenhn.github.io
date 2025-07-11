@@ -8,10 +8,11 @@ body {
   @apply mx-56 px-10 py-10 bg-cyan-50
 }
 
-section h1 {
-  @apply text-4xl mb-2
-}
-
-section li {
-  @apply list-disc my-0.5 text-lg
+section {
+  h1 {
+    @apply text-4xl mb-2;
+  }
+  li {
+    @apply list-disc my-0.5 text-lg;   
+  }
 }
