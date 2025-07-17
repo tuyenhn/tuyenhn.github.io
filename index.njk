@@ -1,0 +1,87 @@
+---
+title: Tuyen Huynh personal website
+---
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/assets/styles.css" rel="stylesheet">
+  <title>{{ title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div id="innerBody">
+
+    {% renderFile "./_includes/content.mdx" %}
+
+    <section>
+      {# add all to tag set #}
+      {% set allTags = ["all"].concat(collections.tagSet) %}
+      <div id="tag-btn-list">
+        {% for tag in allTags %}
+        <button type="button" class="tag-btn" data-seltag="{{ tag }}">
+          {% if tag == "all" %}
+          {% tag "ALL", "gray" %}
+          {% else %}
+          {% tag tag %}
+          {% endif %}
+        </button>
+        {% endfor %}
+      </div>
+
+      <div id="thing-list">
+
+        {% for thing in things %}
+
+        <div class="thing-card" data-tags="{{ thing.tags.join(',') }}">
+          <div class="block">
+            {% for tag in thing.tags %}{% tag tag %}{% endfor %}
+          </div>
+          <div id="title">
+            {{ thing.title }}
+          </div>
+          <div class="block">
+            Role(s):
+
+            {% for role in thing.roles %}
+            <span class="thing-role">{{ role }}</span>
+            {% endfor %}
+
+          </div>
+          <div class="block">
+            <a href="{{ thing.url }}" class="text-sm underline">link</a>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll(".tag-btn");
+    const things = document.querySelectorAll(".thing-card");
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const tag = btn.dataset.seltag;
+        things.forEach(thing => {
+          if (tag === "all") {
+            thing.style.display = "block";
+          } else {
+            thing.style.display = thing.dataset.tags.includes(tag) ? "block" : "none";
+          }
+        });
+      });
+    });
+
+  </script>
+</body>
+
+</html>

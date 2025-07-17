@@ -1,36 +1,476 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/assets/styles.css" rel="stylesheet">
-    <title>Tuyen Huynh personal website</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="innerBody" class="grid grid-cols-1 gap-y-10"><section><h1>Hi! I&#x27;m <strong>Tuyen Huynh</strong></h1><ul>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/assets/styles.css" rel="stylesheet">
+  <title>Tuyen Huynh personal website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div id="innerBody">
+
+    <section><h1>Hi! I&#x27;m <strong>Tuyen Huynh</strong></h1><ul>
 <li>pronunciation: <em>&quot;tween&quot;</em></li>
 <li>Vietnamese script and order: Huỳnh Ngọc Tuyên</li>
-</ul></section><section><h1>👨‍🎓 I am ...</h1><ul>
+</ul></section>
+<section><h1>👨‍🎓 I am ...</h1><ul>
 <li>a PhD student, registered with the University of Oxford, Nuffield Department of Medicine; part of the Brasenose College (Apr 2023 - Apr 2027)</li>
 <li>interested in building Machine Learning models and pipelines for infectious disease forecasting, along with stakeholder engagement</li>
 <li>currently working on building models for dengue forecasting, part of a project called <a href="https://www.dartdengue.org">DART</a> - Dengue Advanced Readiness Tools</li>
 <li>physically based in the Mathematical Modelling group of the Oxford University Clinical Research Unit (OUCRU), Ho Chi Minh City, Viet Nam</li>
 <li>supervised by Dr. Marc Choisy, Assoc. Prof. Sophie Yacoub, Assoc. Prof. Sarah Sparrow, and Prof. Moritz Kraemer</li>
-</ul></section><section><h1>💼 I have ...</h1><ul>
+</ul></section>
+<section><h1>💼 I have ...</h1><ul>
 <li>a background in Computer Science and Information Technology with a Bachelor in Information Technology at RMIT University Vietnam (2019-2022)</li>
 <li>worked as a Research Assistant (Software Developer) the Mathematical Modelling group at OUCRU (Aug 2022 - Mar 2023)</li>
-</ul></section><section><h1>@ You can find me on ...</h1><ul>
+</ul></section>
+<section><h1>@ You can find me on ...</h1><ul>
 <li><a href="https://www.linkedin.com/in/tuyen-h-520a1b125/">LinkedIn</a> (Tuyen Huynh)</li>
 <li><a href="https://orcid.org/my-orcid?orcid=0009-0009-4878-8953">ORCiD</a> (0009-0009-4878-8953)</li>
 <li><a href="https://scholar.google.com/citations?user=rI80uNAAAAAJ&amp;hl=en">Google Scholar</a> (Tuyen Huynh)</li>
 <li><a href="https://www.oucru.org/people/huynh-ngoc-tuyen/">OUCRU profile</a></li>
-</ul></section><section><h1>📫 You can reach me through ...</h1><ul>
+</ul></section>
+<section><h1>📫 You can reach me through ...</h1><ul>
 <li>OUCRU email: <a href="mailto:tuyenhn@oucru.org">tuyenhn@oucru.org</a></li>
 <li>Oxford email: <a href="mailto:bras5568@ox.ac.uk">bras5568@ox.ac.uk</a></li>
-</ul></section><section><h1>Some of the things I worked on</h1></section></div>
-  </body>
+</ul></section>
+<section><h1>Some of the things I worked on</h1></section>
+
+    <section>
+      
+      
+      <div id="tag-btn-list">
+        
+        <button type="button" class="tag-btn" data-seltag="all">
+          
+          
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-gray-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-gray-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-gray-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                ALL
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          
+        </button>
+        
+        <button type="button" class="tag-btn" data-seltag="R">
+          
+          
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-red-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-red-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-red-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                R
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          
+        </button>
+        
+        <button type="button" class="tag-btn" data-seltag="dengue">
+          
+          
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-orange-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-orange-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-orange-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                dengue
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          
+        </button>
+        
+        <button type="button" class="tag-btn" data-seltag="oucru">
+          
+          
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-amber-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-amber-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-amber-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                oucru
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          
+        </button>
+        
+        <button type="button" class="tag-btn" data-seltag="publication">
+          
+          
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-yellow-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-yellow-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-yellow-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                publication
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          
+        </button>
+        
+        <button type="button" class="tag-btn" data-seltag="rmit">
+          
+          
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-lime-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-lime-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-lime-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                rmit
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          
+        </button>
+        
+        <button type="button" class="tag-btn" data-seltag="software">
+          
+          
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-green-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-green-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-green-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                software
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          
+        </button>
+        
+        <button type="button" class="tag-btn" data-seltag="training">
+          
+          
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-emerald-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-emerald-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-emerald-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                training
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          
+        </button>
+        
+      </div>
+
+      <div id="thing-list">
+
+        
+
+        <div class="thing-card" data-tags="publication,dengue">
+          <div class="block">
+            
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-yellow-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-yellow-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-yellow-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                publication
+                <span>&nbsp;</span>
+            </span>
+        </div>
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-orange-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-orange-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-orange-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                dengue
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          </div>
+          <div id="title">
+            A new lineage nomenclature to aid genomic surveillance of dengue virus
+          </div>
+          <div class="block">
+            Role(s):
+
+            
+            <span class="thing-role">co-author</span>
+            
+
+          </div>
+          <div class="block">
+            <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002834" class="text-sm underline">link</a>
+          </div>
+        </div>
+
+        
+
+        <div class="thing-card" data-tags="publication,rmit">
+          <div class="block">
+            
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-yellow-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-yellow-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-yellow-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                publication
+                <span>&nbsp;</span>
+            </span>
+        </div>
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-lime-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-lime-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-lime-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                rmit
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          </div>
+          <div id="title">
+            Fine-tuning large language models for improved health communication in low-resource languages
+          </div>
+          <div class="block">
+            Role(s):
+
+            
+            <span class="thing-role">co-author</span>
+            
+            <span class="thing-role">co-supervisor</span>
+            
+
+          </div>
+          <div class="block">
+            <a href="https://www.sciencedirect.com/science/article/pii/S0169260725000720" class="text-sm underline">link</a>
+          </div>
+        </div>
+
+        
+
+        <div class="thing-card" data-tags="publication,software">
+          <div class="block">
+            
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-yellow-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-yellow-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-yellow-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                publication
+                <span>&nbsp;</span>
+            </span>
+        </div>
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-green-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-green-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-green-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                software
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          </div>
+          <div id="title">
+            GRAPEVNE-Graphical Analytical Pipeline Development Environment for Infectious Diseases
+          </div>
+          <div class="block">
+            Role(s):
+
+            
+            <span class="thing-role">co-author</span>
+            
+            <span class="thing-role">contributor</span>
+            
+
+          </div>
+          <div class="block">
+            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12205304/" class="text-sm underline">link</a>
+          </div>
+        </div>
+
+        
+
+        <div class="thing-card" data-tags="training,oucru,R">
+          <div class="block">
+            
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-emerald-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-emerald-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-emerald-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                training
+                <span>&nbsp;</span>
+            </span>
+        </div>
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-amber-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-amber-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-amber-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                oucru
+                <span>&nbsp;</span>
+            </span>
+        </div>
+        <div class="inline-block relative py-1 text-xs">
+            <div class="absolute inset-0 text-red-200 flex">
+                <svg height="100%" viewBox="0 0 50 100">
+                    <path
+                        d="M49.9,0a17.1,17.1,0,0,0-12,5L5,37.9A17,17,0,0,0,5,62L37.9,94.9a17.1,17.1,0,0,0,12,5ZM25.4,59.4a9.5,9.5,0,1,1,9.5-9.5A9.5,9.5,0,0,1,25.4,59.4Z"
+                        fill="currentColor" />
+                </svg>
+                <div class="flex-grow h-full -ml-px bg-red-200 rounded-md rounded-l-none"></div>
+            </div>
+            <span class="relative text-red-500 font-semibold pr-px">
+                <span>&nbsp;&nbsp;</span>
+                R
+                <span>&nbsp;</span>
+            </span>
+        </div>
+          </div>
+          <div id="title">
+            OUCRU R training 2025
+          </div>
+          <div class="block">
+            Role(s):
+
+            
+            <span class="thing-role">co-organiser</span>
+            
+            <span class="thing-role">instructor</span>
+            
+
+          </div>
+          <div class="block">
+            <a href="https://oucru-modelling.github.io/R-training-2025/" class="text-sm underline">link</a>
+          </div>
+        </div>
+
+        
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll(".tag-btn");
+    const things = document.querySelectorAll(".thing-card");
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const tag = btn.dataset.seltag;
+        things.forEach(thing => {
+          if (tag === "all") {
+            thing.style.display = "block";
+          } else {
+            thing.style.display = thing.dataset.tags.includes(tag) ? "block" : "none";
+          }
+        });
+      });
+    });
+
+  </script>
+</body>
+
 </html>

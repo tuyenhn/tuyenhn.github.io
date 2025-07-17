@@ -1,6 +1,7 @@
 {
-  "tailwind-raw-reorder.IgnoreConfigNotFound": true,
-  "tailwind-raw-reorder.runOnSave": true,
+  "[tailwindcss]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
   "auto-close-tag.activationOnLanguage": [
     "xml",
     "php",
@@ -22,5 +23,10 @@
     "HTML (Eex)",
     "plist",
     "mdx"
-  ]
+  ],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "headwind.runOnSave": true,
+  "javascript.format.semicolons": "insert"
 }
