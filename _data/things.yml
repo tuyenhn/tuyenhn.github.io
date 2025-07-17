@@ -13,7 +13,90 @@
   roles: ["co-author", "contributor"]
   url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12205304/"
 
+- title: "Infectious Disease Modelling Conference 2024"
+  tags: ["poster", "conference", "presentation"]
+  roles: ["author", "presenter", "workshop attendee"]
+  extra:
+    - name: "Early Career Researcher (ECR) Sandbox Presentation"
+      value: "Quantifying Machine Learning forecast uncertainties in dengue incidence time series forecasting"
+    - name: "Poster title"
+      value: "Short-term high-resolution dengue incidence forecasting in Ho Chi Minh City, Vietnam"
+  url: "https://idmconference.net/"
+
+- title: "Asia Dengue Summit 2023"
+  tags: ["poster", "dengue", "DART", "conference"]
+  roles: ["author"]
+  extra:
+    - name: "Poster title"
+      value: "A high-resolution dengue forecasting system in Vietnam"
+  url: "https://www.asiadenguesummit.org/wp-content/uploads/6th-Asia-Dengue-Summit-Programme-Book.pdf#page=95"
+
+- title: "International Pandemic Sciences Conference 2024"
+  tags: ["poster", "DART", "conference"]
+  roles: ["author"]
+  extra:
+    - name: "Poster title"
+      value: "A high-resolution short-term dengue forecasting system in Vietnam"
+
+- title: "15th Annual Summer Institute in Statistics and Modeling in Infectious Diseases (SISMID)"
+  tags: ["summer school"]
+  roles: ["attendee"]
+  extra:
+    - name: "Scholarship Awardee"
+      value: "Attended 3 courses free of cost"
+    - name: "Date"
+      value: "09-20/07/2023"
+
+- title: "MIDSEA Summer School"
+  tags: ["summer school", "poster"]
+  roles: ["attendee", "poster author"]
+  extra:
+    - name: "Poster title"
+      value: "A high-resolution short-term dengue forecasting system in Vietnam"
+  url: "https://midsea.network/summer-school/2024/"
+
+
 - title: "OUCRU R training 2025"
   tags: ["training", "oucru", "R"]
   roles: ["co-organiser", "instructor"]
   url: "https://oucru-modelling.github.io/R-training-2025/"
+
+- title: "OUCRU R Café"
+  tags: ["training", "oucru", "R"]
+  roles: ["co-organiser", "instructor"]
+  url: "https://oucru-modelling.github.io/R-cafe-materials/"
+
+
+- title: "OUCRU Open Day 2024"
+  tags: ["oucru"]
+  roles: ["presenter"]
+  url: "https://www.youtube.com/watch?v=2X7DXrmVvmY"
+
+- title: "The MORU-OUCRU Three-Minute Thesis (3MT) competition"
+  tags: ["oucru"]
+  roles: ["finalist"]
+  extra:
+    - name: "Finalist"
+      value: "2023, 2024"
+  url: "https://www.oucru.org/2023-3mt-mosc/"
+
+- title: "Princeton Student Internship for OUCRU Vietnam"
+  tags: ["oucru"]
+  roles: ["supervisor"]
+  extra:
+    - name: "Students supervised"
+      value: "1"
+
+- title: "RMIT Capstone project"
+  tags: ["rmit"]
+  roles: ["supervisor"]
+  extra:
+    - name: "Groups supervised"
+      value: "2"
+    - name: "Year"
+      value: "2023, 2025"
+
+
+
+
+

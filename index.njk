@@ -12,14 +12,18 @@ title: Tuyen Huynh personal website
   <title>{{ title }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Yomogi&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
   <div id="innerBody">
 
-    {% renderFile "./_includes/content.mdx" %}
+    {# markdown text contents (with html tags) #}
+    {% renderFile "./_includes/content.njk" %}
 
+    {# `things` showcase section #}
     <section>
       {# add all to tag set #}
       {% set allTags = ["all"].concat(collections.tagSet) %}
@@ -35,28 +39,43 @@ title: Tuyen Huynh personal website
         {% endfor %}
       </div>
 
+      {# list of `things` #}
       <div id="thing-list">
 
         {% for thing in things %}
 
         <div class="thing-card" data-tags="{{ thing.tags.join(',') }}">
-          <div class="block">
+          {# tags #}
+          <div id="thing-tags">
             {% for tag in thing.tags %}{% tag tag %}{% endfor %}
           </div>
+          {# title #}
           <div id="title">
             {{ thing.title }}
           </div>
+          {# roles #}
           <div class="block">
-            Role(s):
+            <span class="thing-field">Role(s):</span>
 
             {% for role in thing.roles %}
-            <span class="thing-role">{{ role }}</span>
+            <span>{{ role }}</span>{% if not loop.last %}, {% endif %}
             {% endfor %}
+          </div>
+          {# extra stuff #}
+          {% for field in thing.extra %}
+          <div>
+            <span class="thing-field">{{field.name}}:</span> {{field.value}}
+          </div>
+          {% endfor %}
 
-          </div>
+          {# url #}
+          {% if thing.url %}
           <div class="block">
-            <a href="{{ thing.url }}" class="text-sm underline">link</a>
+            <a href="{{ thing.url }}" class="thing-field" target="_blank">
+              <span>Learn more {% lucide "external-link"%}</span>
+            </a>
           </div>
+          {% endif %}
         </div>
 
         {% endfor %}
@@ -64,6 +83,7 @@ title: Tuyen Huynh personal website
     </section>
   </div>
 
+  {# script for tag buttons filtering #}
   <script>
     const buttons = document.querySelectorAll(".tag-btn");
     const things = document.querySelectorAll(".thing-card");
@@ -73,9 +93,9 @@ title: Tuyen Huynh personal website
         const tag = btn.dataset.seltag;
         things.forEach(thing => {
           if (tag === "all") {
-            thing.style.display = "block";
+            thing.style.display = "grid";
           } else {
-            thing.style.display = thing.dataset.tags.includes(tag) ? "block" : "none";
+            thing.style.display = thing.dataset.tags.split(",").includes(tag) ? "grid" : "none";
           }
         });
       });

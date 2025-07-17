@@ -1,17 +1,18 @@
 @import 'tailwindcss';
+/* safelisting classes for tags */
 @source inline("{text,bg}-{red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose,slate,gray,zinc,neutral,stone}-{200,500}");
 
 body {
-  @apply tracking-wide font-[Yomogi] font-normal bg-cyan-100;
+  @apply tracking-wide font-[Montserrat] font-normal bg-gray-100;
 }
 
 #innerBody {
-  @apply px-20 py-10 bg-cyan-50 lg:mx-56 mx-36 grid grid-cols-1 gap-y-10;
+  @apply px-20 py-10 bg-white lg:mx-56 mx-36 grid grid-cols-1 gap-y-10;
 }
 
 section {
   h1 {
-    @apply text-4xl mb-2;
+    @apply font-[Yomogi] text-5xl mb-4;
   }
   li {
     @apply list-disc my-0.5 text-lg;
@@ -20,14 +21,17 @@ section {
       @apply underline text-blue-500;
     }
 
+    svg {
+      @apply inline-flex h-[1em] w-[1em] relative top-[-0.125em];
+    }
   }
 }
 
 #tag-btn-list {
-  @apply mb-5 flex justify-around flex-row;
+  @apply mb-5 flex justify-around flex-row flex-wrap border border-gray-200 rounded-lg p-3;
   
   .tag-btn {
-    @apply hover:cursor-pointer min-w-10;
+    @apply hover:cursor-pointer min-w-16 my-1;
   }
 }
 
@@ -36,13 +40,25 @@ section {
 }
 
 .thing-card {
-  @apply border bg-white rounded-lg p-4 transition hover:shadow-xl hover:scale-115 hover:z-10;
+  @apply grid grid-cols-1 gap-y-0.5 border bg-white rounded-lg p-4 transition hover:shadow-xl hover:scale-115 hover:z-10;
+
+  #thing-tags {
+    @apply block;
+  }
 
   #title {
     @apply block font-bold text-xl;
   }
-}
 
-.thing-role {
-  @apply bg-cyan-100;
+  .thing-field {
+    @apply bg-gray-200 font-semibold;
+
+    svg {
+      @apply inline-flex h-[1em] w-[1em] relative top-[-0.125em];
+    }
+  }
+
+  :not(#thing-tags):not(#title) {
+    @apply text-sm;
+  }
 }

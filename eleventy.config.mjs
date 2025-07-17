@@ -1,11 +1,12 @@
-import { pathToFileURL } from "node:url";
+import { RenderPlugin } from "@11ty/eleventy";
+import eleventyLucideicons from "@grimlink/eleventy-plugin-lucide-icons";
+import postcssPlugin from "@jgarber/eleventy-plugin-postcss";
 import { evaluate } from "@mdx-js/mdx";
+import yaml from "js-yaml";
+import { readFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
 import { renderToStaticMarkup } from "react-dom/server";
 import * as runtime from "react/jsx-runtime";
-import postcssPlugin from "@jgarber/eleventy-plugin-postcss";
-import yaml from "js-yaml";
-import { RenderPlugin } from "@11ty/eleventy";
-import { readFileSync } from "node:fs";
 
 
 const tailwindColors = ['red',
@@ -52,6 +53,7 @@ export default async function (eleventyConfig) {
     // Plugins
     eleventyConfig.addPlugin(postcssPlugin);
     eleventyConfig.addPlugin(RenderPlugin);
+    eleventyConfig.addPlugin(eleventyLucideicons,);
 
     // Add YAML data file support
     eleventyConfig.addDataExtension("yml", (contents) => yaml.load(contents));
@@ -68,7 +70,7 @@ export default async function (eleventyConfig) {
         const lbl_color = (typeof color === 'undefined') ? colorMap[taglabel] : color;
 
         return `
-        <div class="inline-block relative py-1 text-xs">
+        <div class="inline-block relative py-1 my-0.5 text-sm">
             <div class="absolute inset-0 text-${lbl_color}-200 flex">
                 <svg height="100%" viewBox="0 0 50 100">
                     <path
