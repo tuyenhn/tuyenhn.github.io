@@ -28,10 +28,14 @@ section {
 }
 
 #tag-btn-list {
-  @apply mb-5 flex justify-around flex-row flex-wrap border border-gray-200 rounded-lg p-3;
+  @apply mb-5 flex flex-row flex-wrap justify-between border border-gray-200 rounded-lg p-3;
   
   .tag-btn {
     @apply hover:cursor-pointer min-w-16 my-1;
+  }
+
+  .tag-btn[data-seltag="all"] {
+    @apply basis-full;
   }
 }
 
