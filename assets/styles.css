@@ -7,7 +7,7 @@ body {
 }
 
 #innerBody {
-  @apply px-20 py-10 bg-white lg:mx-56 mx-36 grid grid-cols-1 gap-y-10;
+  @apply px-20 py-10 bg-white lg:mx-56 md:mx-24 grid grid-cols-1 gap-y-10;
 }
 
 section {
@@ -28,7 +28,7 @@ section {
 }
 
 #tag-btn-list {
-  @apply mb-5 flex flex-row flex-wrap justify-between border border-gray-200 rounded-lg p-3;
+  @apply mb-5 flex flex-row flex-wrap justify-evenly gap-x-1 lg:gap-x-3 border border-gray-200 rounded-lg p-3;
   
   .tag-btn {
     @apply hover:cursor-pointer min-w-16 my-1;
@@ -40,7 +40,7 @@ section {
 }
 
 #thing-list {
-  @apply grid grid-cols-2! gap-2 grid-flow-row sm:grid-cols-1;
+  @apply grid lg:grid-cols-2! gap-2 grid-flow-row grid-cols-1;
 }
 
 .thing-card {
