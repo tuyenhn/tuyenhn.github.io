@@ -37,7 +37,9 @@ const getTagSet = () => {
     // Read `things` yaml
     const things = yaml.load(readFileSync("./_data/things.yml"));
 
-    return new Set(things.map((thing) => thing.tags).flat().sort());
+    return new Set(things.map((thing) => thing.tags).flat().sort((a, b) => {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+    }));
 };
 
 const getColorMap = () => {
