@@ -58,7 +58,7 @@ title: Tuyen Huynh personal website
             <span class="thing-field">Role(s):</span>
 
             {% for role in thing.roles %}
-            <span>{{ role }}</span>{% if not loop.last %}, {% endif %}
+            <span>{{ role | capitalize }}</span>{% if not loop.last %}; {% endif %}
             {% endfor %}
           </div>
           {# extra stuff #}
