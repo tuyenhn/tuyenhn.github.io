@@ -137,3 +137,11 @@
   tags: ["grant"]
   roles: ["grant writer", "work package leader"]
   date: "2025/04"
+
+- title: "Climate & Health Regional Seminar Series - Asia and the Pacific"
+  tags: ["presentation", "DART"]
+  roles: ["presenter"]
+  date: "2025/04/04"
+  extra:
+    - name: "Description"
+      value: "Presented DART at a seminar hosted by Wellcome's Climate & Health team"
