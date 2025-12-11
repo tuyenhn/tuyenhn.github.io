@@ -82,7 +82,7 @@ export default async function (eleventyConfig) {
                 <div class="flex-grow h-full -ml-px bg-${lbl_color}-200 rounded-md rounded-l-none"></div>
             </div>
             <span class="relative text-${lbl_color}-500 font-semibold pr-px">
-                <span>&nbsp;&nbsp;</span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
                 ${taglabel}
                 <span>&nbsp;</span>
             </span>
