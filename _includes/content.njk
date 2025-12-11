@@ -7,8 +7,8 @@
 </section>
 
 <section>
+  <h1> {% lucide "user-pen" %} I am ... </h1>
   {% renderTemplate "md" %}
-  # 👨‍🎓 I am ...
   - a PhD student, registered with the University of Oxford, Nuffield Department of Medicine; part of the Brasenose
   College (Apr 2023 - Apr 2027)
   - interested in building Machine Learning models and pipelines for infectious disease forecasting, along with
@@ -22,8 +22,8 @@
 </section>
 
 <section>
+  <h1> {% lucide "briefcase-business" %} I have ... </h1>
   {% renderTemplate "md" %}
-  # 💼 I have ...
   - a background in Computer Science and Information Technology with a Bachelor in Information Technology at RMIT
   University Vietnam (2019-2022)
   - worked as a Research Assistant (Software Developer) the Mathematical Modelling group at OUCRU (Aug 2022 - Mar 2023)
@@ -32,9 +32,7 @@
 
 {# special section, mixed md and nunjucks #}
 <section>
-  {% renderTemplate "md" %}
-  # @ You can find me on ...
-  {% endrenderTemplate %}
+  <h1> {% lucide "at-sign" %} You can find me on ... </h1>
   <ul>
     <li>
       {% lucide "linkedin" %}&nbsp;
@@ -70,8 +68,8 @@
 </section>
 
 <section>
+  <h1> {% lucide "mailbox" %} You can reach me through ... </h1>
   {% renderTemplate "md" %}
-  # 📫 You can reach me through ...
   - OUCRU email: [tuyenhn@oucru.org](mailto:tuyenhn@oucru.org)
   - Oxford email: [bras5568@ox.ac.uk](mailto:bras5568@ox.ac.uk)
   {% endrenderTemplate %}
