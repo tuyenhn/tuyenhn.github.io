@@ -7,19 +7,23 @@ body {
 }
 
 #innerBody {
-  @apply px-20 py-10 bg-white lg:mx-56 md:mx-24 grid grid-cols-1 gap-y-10;
+  @apply px-8 md:px-20 py-10 bg-white lg:mx-56 md:mx-24 grid grid-cols-1 gap-y-10;
+}
+
+a {
+  @apply underline text-blue-500;
 }
 
 section {
   h1 {
-    @apply font-[Yomogi] text-5xl mb-4;
+    @apply font-[Yomogi] md:text-5xl text-3xl mb-4;
+
+    svg {
+      @apply inline-flex h-[1em] w-[1em] relative top-[-0.125em];
+    }
   }
   li {
     @apply list-disc my-0.5 text-lg;
-
-    a {
-      @apply underline text-blue-500;
-    }
 
     svg {
       @apply inline-flex h-[1em] w-[1em] relative top-[-0.125em];
