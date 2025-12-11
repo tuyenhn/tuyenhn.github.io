@@ -86,7 +86,14 @@ title: Tuyen Huynh personal website
               {% if thing.url %}
                 <div class="block">
                   <a href="{{ thing.url }}" class="thing-field" target="_blank">
-                    <span>Learn more {% lucide "external-link"%}</span>
+              <span>
+                {% if 'publication' in thing.tags %}
+                DOI
+                {% else %}
+                Learn more
+                {% endif %}
+                {% lucide "external-link"%}
+              </span>
                   </a>
                 </div>
               {% endif %}
