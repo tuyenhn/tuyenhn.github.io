@@ -145,3 +145,19 @@
   extra:
     - name: "Description"
       value: "Presented DART at a seminar hosted by Wellcome's Climate & Health team"
+
+- title: "American Society of Tropical Medicine and Hygiene (ASTMH) Annual Meeting 2025"
+  tags: ["conference", "poster", "DART"]
+  roles: ["author"]
+  date: "2025/11/10"
+
+- title: "10th International Conference on Infectious Disease Dynamics (EPIDEMICS 10)"
+  tags: ["conference", "poster", "DART"]
+  roles: ["author"]
+  date: "2025/12/02"
+
+- title: "Scalable, open-access and multidisciplinary data integration pipeline for climate-sensitive diseases"
+  tags: ["publication", "DART", "software"]
+  roles: ["co-first author", "contributor"]
+  date: "2025/11/15"
+  url: "https://doi.org/10.12688/wellcomeopenres.24774.2"
