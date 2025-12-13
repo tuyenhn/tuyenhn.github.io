@@ -133,10 +133,13 @@
     - name: "Manuscripts reviewed"
       value: "1"
 
-- title: "Multicounty analysis of dengue and Zika virus burden, immunogenicity, and population level risk"
+- title: "Multicountry analysis of dengue and Zika virus burden, immunogenicity, and population level risk (MADZIP)"
   tags: ["grant"]
-  roles: ["grant writer", "work package leader"]
+  roles: ["grant co-writer", "work package co-leader"]
   date: "2025/04"
+  extra:
+    - name: "Funder"
+      value: "Wellcome"
 
 - title: "Climate & Health Regional Seminar Series - Asia and the Pacific"
   tags: ["presentation", "DART"]
