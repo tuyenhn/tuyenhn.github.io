@@ -153,11 +153,17 @@
   tags: ["conference", "poster", "DART"]
   roles: ["author"]
   date: "2025/11/10"
+  extra:
+    - name: "Poster title"
+      value: "A probabilistic high-resolution spatiotemporal dengue forecasting system for Ho Chi Minh City, Vietnam"
 
 - title: "10th International Conference on Infectious Disease Dynamics (EPIDEMICS 10)"
   tags: ["conference", "poster", "DART"]
   roles: ["author"]
   date: "2025/12/02"
+  extra:
+    - name: "Poster title"
+      value: "Probabilistic time series forecasting of dengue incidence using Machine Learning and Conformal Prediction in Ho Chi Minh City, Vietnam"
 
 - title: "Scalable, open-access and multidisciplinary data integration pipeline for climate-sensitive diseases"
   tags: ["publication", "DART", "software"]
