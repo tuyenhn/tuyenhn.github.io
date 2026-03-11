@@ -19,12 +19,16 @@
 - title: "Infectious Disease Modelling Conference 2024"
   tags: ["poster", "conference", "presentation", "workshop"]
   roles: ["author", "presenter", "workshop attendee"]
-  date: "2024/11/06"
+  date: "2024/11/06 - 08"
   extra:
+    - name: "Location"
+      value: "Bangkok, Thailand"
     - name: "Early Career Researcher (ECR) Sandbox Presentation"
       value: "Quantifying Machine Learning forecast uncertainties in dengue incidence time series forecasting"
     - name: "Poster title"
       value: "Short-term high-resolution dengue incidence forecasting in Ho Chi Minh City, Vietnam"
+    - name: "Poster author list"
+      value: "Tuyen Huynh, on behalf of the DART consortium"
     - name: "Pre-conference workshop attended"
       value: "Understanding, evaluating, and improving forecasts of infectious disease burden"
   url: "https://idmconference.net/"
@@ -32,10 +36,14 @@
 - title: "2025 Ecology and Evolution of Infectious Disease Conference"
   tags: ["poster", "conference", "workshop"]
   roles: ["author", "workshop attendee", "workshop travel awardee"]
-  date: "2025/06/16"
+  date: "2025/06/16 - 19"
   extra:
+    - name: "Location"
+      value: "University of Notre Dame, Notre Dame, Indiana, USA"
     - name: "Poster title"
       value: "A probabilistic high-resolution spatiotemporal dengue forecasting system for Ho Chi Minh City, Vietnam"
+    - name: "Poster author list"
+      value: "Tuyen Huynh, Abhishek Dasgupta, Yiwen Xing, Iago Perez Fernandez, Sophie Yacoub, Marc Choisy, Moritz U.G. Kraemer, David Wallom, Sarah Sparrow, on behalf of the DART consortium"
     - name: "Pre-conference workshop attended"
       value: "Workshop on AI/ML in Disease Ecology"
   url: "https://sites.nd.edu/eeid2025/"
@@ -43,25 +51,35 @@
 - title: "Asia Dengue Summit 2023"
   tags: ["poster", "dengue", "DART", "conference"]
   roles: ["author"]
-  date: "2023/06/15"
+  date: "2023/06/15 - 16"
   extra:
+    - name: "Location"
+      value: "Bangkok, Thailand"
     - name: "Poster title"
       value: "A high-resolution dengue forecasting system in Vietnam"
+    - name: "Poster author list"
+      value: "Tuyen Huynh, Manh Nguyen, Vi Tran, Kien Duong, Tung Nguyen, Thanh Ngo-Duc, Sarah Sparrow, Sophie Yacoub, Marc Choisy"
   url: "https://www.asiadenguesummit.org/wp-content/uploads/6th-Asia-Dengue-Summit-Programme-Book.pdf#page=95"
 
 - title: "International Pandemic Sciences Conference 2024"
   tags: ["poster", "DART", "conference"]
   roles: ["author"]
-  date: "2024/07/01"
+  date: "2024/07/01 - 02"
   extra:
+    - name: "Location"
+      value: "Oxford, England, UK"
     - name: "Poster title"
       value: "A high-resolution short-term dengue forecasting system in Vietnam"
+    - name: "Poster author list"
+      value: "Tuyen Huynh, Pham Quang Thai, Le Hong Nga, David Wallom, Antje Weisheimer, Min Chen, Thanh Ngo-Duc, Moritz Kraemer, Marc Choisy, Sophie Yacoub, Sarah Sparrow, on behalf of the DART consortium"
 
 - title: "15th Annual Summer Institute in Statistics and Modeling in Infectious Diseases (SISMID)"
   tags: ["summer school"]
   roles: ["attendee"]
   date: "2023/07/09"
   extra:
+    - name: "Location"
+      value: "University of Washington, Seattle, USA"
     - name: "Scholarship Awardee"
       value: "Attended 3 courses free of cost"
     - name: "Date"
@@ -70,10 +88,15 @@
 - title: "MIDSEA Summer School 2024"
   tags: ["summer school", "poster"]
   roles: ["attendee", "poster author"]
-  date: "2024/06/19"
+  date: "2024/06/19 - 29"
   extra:
+    - name: "Location"
+      value: "International Centre for Interdisciplinary Science and Education (ICISE), Qui Nhơn, Vietnam"
     - name: "Poster title"
       value: "A high-resolution short-term dengue forecasting system in Vietnam"
+    - name: "Poster author list"
+      value: "Tuyen Huynh, Pham Quang Thai, Le Hong Nga, David Wallom, Antje Weisheimer, Min Chen, Thanh Ngo-Duc, Moritz Kraemer, Marc Choisy, Sophie Yacoub, Sarah Sparrow, on behalf of the DART consortium"
+
   url: "https://midsea.network/summer-school/2024/"
 
 - title: "OUCRU R training 2025"
@@ -152,18 +175,27 @@
 - title: "American Society of Tropical Medicine and Hygiene (ASTMH) Annual Meeting 2025"
   tags: ["conference", "poster", "DART"]
   roles: ["author"]
-  date: "2025/11/10"
+  date: "2025/11/09 - 13"
   extra:
+    - name: "Location"
+      value: "Metro Toronto Convention Centre, Toronto, Canada"
     - name: "Poster title"
       value: "A probabilistic high-resolution spatiotemporal dengue forecasting system for Ho Chi Minh City, Vietnam"
+    - name: "Poster author list"
+      value: "Tuyen Huynh, Abhishek Dasgupta, Yiwen Xing, Iago Perez Fernandez, Sophie Yacoub, Marc Choisy, Moritz U.G. Kraemer, David Wallom, Sarah Sparrow, on behalf of the DART consortium"
+
 
 - title: "10th International Conference on Infectious Disease Dynamics (EPIDEMICS 10)"
   tags: ["conference", "poster", "DART"]
   roles: ["author"]
-  date: "2025/12/02"
+  date: "2025/11/30 - 12/03"
   extra:
+    - name: "Location"
+      value: "Paradise Point Resort & Spa, San Diego, California, USA"
     - name: "Poster title"
       value: "Probabilistic time series forecasting of dengue incidence using Machine Learning and Conformal Prediction in Ho Chi Minh City, Vietnam"
+    - name: "Poster author list"
+      value: "Tuyen Huynh, Cathal Mills, Lan Truong Thi Thanh, Nga Le Hong, Sarah Sparrow, Sophie Yacoub, Moritz U.G. Kraemer, Marc Choisy"
 
 - title: "Scalable, open-access and multidisciplinary data integration pipeline for climate-sensitive diseases"
   tags: ["publication", "DART", "software"]
