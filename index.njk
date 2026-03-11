@@ -4,130 +4,115 @@ title: Tuyen Huynh personal website
 
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/assets/styles.css" rel="stylesheet">
-  <title>{{ title }}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Yomogi&display=swap"
-    rel="stylesheet">
-</head>
-
-<body>
-  <div id="innerBody">
-
-    {# markdown text contents (with html tags) #}
-    {% renderFile "./_includes/content.njk" %}
-
-    {# `things` showcase section #}
-    <section>
-      {# add all to tag set #}
-      {% set allTags = ["all"].concat(collections.tagSet) %}
-      <div id="tag-btn-list">
-        {% for tag in allTags %}
-        <button type="button" class="tag-btn" data-seltag="{{ tag }}">
-          {% if tag == "all" %}
-          {% tag "ALL",
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/assets/styles.css" rel="stylesheet">
+    <title>{{ title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Yomogi&display=swap"
+      rel="stylesheet">
+  </head>
+  <body>
+    <div
+      id="innerBody">
+      {# markdown text contents (with html tags) #}
+      {% renderFile "./_includes/content.njk" %}
+      {# `things` showcase section #}
+      <section>
+        {# add all to tag set #}
+        {% set allTags = ["all"].concat(collections.tagSet) %}
+        <div id="tag-btn-list">
+          {% for tag in allTags %}
+            <button type="button" class="tag-btn" data-seltag="{{ tag }}">
+              {% if tag == "all" %}
+                {% tag "ALL",
           "gray" %}
-          {% else %}
-          {% tag tag %}
-          {% endif %}
-        </button>
-        {% endfor %}
-      </div>
-
-      {# list of `things` #}
-      <div id="thing-list">
-
-        {% for thing in things | sort(true, true, 'date') %}
-
-        <div class="thing-card" data-tags="{{ thing.tags.join(',') }}">
-          {# tags #}
-          <div id="thing-tags">
-            {% for tag in thing.tags %}
-            {% tag tag %}
-            {% endfor %}
-          </div>
-
-          {# title #}
-          <div id="title">
-            {{ thing.title }}
-          </div>
-
-          {# roles #}
-          <div class="block">
-            <span class="thing-field">Role(s):</span>
-
-            {% for role in thing.roles %}
-            <span>{{ role | capitalize }}</span>
-            {%- if not loop.last %};{% endif %}
-            {% endfor %}
-          </div>
-
-          {# date #}
-          <div class="block">
-            <span class="thing-field">Date:</span>
-            {{ thing.date }}
-          </div>
-
-          {# extra stuff #}
-          {% for field in thing.extra %}
-          <div>
-            <span class="thing-field">{{field.name}}:</span>
-            {{field.value}}
-          </div>
+              {% else %}
+                {% tag tag %}
+              {% endif %}
+            </button>
           {% endfor %}
-
-          {# url #}
-          {% if thing.url %}
-          <div class="block">
-            <a href="{{ thing.url }}" class="thing-field" target="_blank">
-              <span>
-                {% if 'publication' in thing.tags %}
-                DOI
-                {% else %}
-                Learn more
-                {% endif %}
-                {% lucide "external-link"%}
-              </span>
-            </a>
-          </div>
-          {% endif %}
         </div>
-
-        {% endfor %}
-      </div>
-    </section>
-  </div>
-
-  {# script for tag buttons filtering #}
-  <script>
-    const buttons = document.querySelectorAll(".tag-btn");
-    const things = document.querySelectorAll(".thing-card");
-
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const tag = btn.dataset.seltag;
-        things.forEach(thing => {
-          if (tag === "all") {
-            thing.style.display = "grid";
-          } else {
-            thing.style.display = thing
-              .dataset
-              .tags
-              .split(",")
-              .includes(tag)
-              ? "grid"
-              : "none";
-          }
+        {# list of `things` #}
+        <div id="thing-list">
+          {% for thing in things | sort(true, true, 'date') %}
+            <div
+              class="thing-card" data-tags="{{ thing.tags.join(',') }}">
+              {# tags #}
+              <div id="thing-tags">
+                {% for tag in thing.tags %}
+                  {% tag tag %}
+                {% endfor %}
+              </div>
+              {# title #}
+              <div id="title">
+                {{ thing.title }}
+              </div>
+              {# roles #}
+              <div class="block">
+                <span class="thing-field">Role(s):</span>
+                {% for role in thing.roles %}
+                  <span>{{ role | capitalize }}</span>
+                  {%- if not loop.last %};{% endif %}
+                {% endfor %}
+              </div>
+              {# date #}
+              <div class="block">
+                <span class="thing-field">Date:</span>
+                {{ thing.date }}
+              </div>
+              {# extra stuff #}
+              {% for field in thing.extra %}
+                <div>
+                  <span class="thing-field">{{ field.name }}:</span>
+                  {{ field.value }}
+                </div>
+              {% endfor %}
+              {# url #}
+              {% if thing.url %}
+                <div class="block">
+                  <a href="{{ thing.url }}" class="thing-field" target="_blank">
+                    <span>
+                      {% if 'publication' in thing.tags %}
+                        DOI
+                      {% else %}
+                        Learn more
+                      {% endif %}
+                      {% lucide "external-link" %}
+                    </span>
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+    {# script for tag buttons filtering #}
+    <script>
+      const buttons = document.querySelectorAll(".tag-btn");
+      const things = document.querySelectorAll(".thing-card");
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const tag = btn.dataset.seltag;
+          things.forEach(thing => {
+            if (tag === "all") {
+              thing.style.display = "grid";
+            } else {
+              thing.style.display = thing
+                .dataset
+                .tags
+                .split(",")
+                .includes(tag)
+                  ? "grid"
+                  : "none";
+            }
+          });
         });
       });
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
