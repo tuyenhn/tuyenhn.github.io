@@ -2,31 +2,8 @@
   "[tailwindcss]": {
     "editor.defaultFormatter": "vscode.css-language-features"
   },
-  "auto-close-tag.activationOnLanguage": [
-    "xml",
-    "php",
-    "blade",
-    "ejs",
-    "jinja",
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "plaintext",
-    "markdown",
-    "vue",
-    "liquid",
-    "erb",
-    "lang-cfml",
-    "cfml",
-    "HTML (EEx)",
-    "HTML (Eex)",
-    "plist",
-    "mdx"
-  ],
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "headwind.runOnSave": true,
-  "javascript.format.semicolons": "insert"
+  "js/ts.format.semicolons": "insert"
 }
