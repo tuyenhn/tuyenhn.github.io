@@ -163,6 +163,8 @@
   extra:
     - name: "Funder"
       value: "Wellcome"
+    # - name: "Grant value"
+    #   value: 
 
 - title: "Climate & Health Regional Seminar Series - Asia and the Pacific"
   tags: ["presentation", "DART"]
@@ -202,3 +204,13 @@
   roles: ["co-first author", "contributor"]
   date: "2025/11/15"
   url: "https://doi.org/10.12688/wellcomeopenres.24774.2"
+
+- title: "Optimal levels of spatiotemporal aggregation of public health surveillance data for incidence forecasting"
+  tags: ["grant", "project", "OUCRU", "dengue"]
+  roles: ["PI"]
+  date: "2025/12/01 - 2026/11/30"
+  extra:
+    - name: "Funder"
+      value: "OUCRU PSC (Programme Scientific Committee)"
+    - name: "Grant value"
+      value: "27506 USD"
