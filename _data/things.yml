@@ -163,8 +163,6 @@
   extra:
     - name: "Funder"
       value: "Wellcome"
-    # - name: "Grant value"
-    #   value: 
 
 - title: "Climate & Health Regional Seminar Series - Asia and the Pacific"
   tags: ["presentation", "DART"]
