@@ -107,10 +107,27 @@ section {
   .tag-btn[data-seltag="all"] {
     @apply basis-full;
   }
+
+  /* a greyed-out tag button shows a little more colour on hover, to show that it is clickable */
+  .tag-btn:hover .tag-label.is-dimmed {
+    @apply opacity-70;
+  }
 }
 
+/* tag labels (buttons and cards); while a filter is on, labels outside the selection turn grey */
+.tag-label {
+  @apply transition;
+
+  &.is-dimmed {
+    @apply grayscale opacity-40;
+  }
+}
+
+/* the script sets --thing-list-min-h to the height of two rows, so a short result does not make the page jump;
+   `content-start` keeps the rows at their natural height inside the extra space;
+   `relative` makes the card offsets (used for the measurement) relative to this list */
 #thing-list {
-  @apply grid lg:grid-cols-2! gap-2 grid-flow-row grid-cols-1;
+  @apply relative grid lg:grid-cols-2! gap-2 grid-flow-row grid-cols-1 content-start min-h-(--thing-list-min-h);
 }
 
 .thing-card {

@@ -14,7 +14,8 @@ tab: about me
       <button
         type="button"
         class="tag-btn"
-        data-seltag="{{ tag }}">
+        data-seltag="{{ tag }}"
+        {% if tag != "all" %}aria-pressed="false"{% endif %}>
         {% if tag == "all" %}
           {%
             tag "ALL",
@@ -85,25 +86,80 @@ tab: about me
   </div>
 </section>
 {# script for tag buttons filtering #}
+{# click a tag to add it to the selection, click it again to remove it; "ALL" clears the selection #}
+{# a thing shows if it has ANY selected tag; while a filter is on, tag labels outside the selection turn grey #}
 <script>
-const buttons = document.querySelectorAll(".tag-btn");
-  const things = document.querySelectorAll(".thing-card");
-  buttons.forEach(btn => {
+const tagBtns = document.querySelectorAll("#tag-btn-list .tag-btn");
+  const tagLabels = document.querySelectorAll("#tag-btn-list .tag-label, #thing-list .tag-label");
+  const thingList = document.getElementById("thing-list");
+  const things = [...thingList.querySelectorAll(".thing-card")];
+  const selected = new Set();
+
+  const applyFilter = () => {
+    const filtering = selected.size > 0;
+    tagBtns.forEach(btn => {
+      if (btn.dataset.seltag !== "all") {
+        btn.setAttribute("aria-pressed", selected.has(btn.dataset.seltag));
+      }
+    });
+    tagLabels.forEach(label => {
+      label
+        .classList
+        .toggle("is-dimmed", filtering && !selected.has(label.dataset.tag));
+    });
+    things.forEach(thing => {
+      thing.hidden = filtering && !thing
+        .dataset
+        .tags
+        .split(",")
+        .some(tag => selected.has(tag));
+    });
+  };
+
+  tagBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       const tag = btn.dataset.seltag;
-      things.forEach(thing => {
-        if (tag === "all") {
-          thing.style.display = "grid";
-        } else {
-          thing.style.display = thing
-            .dataset
-            .tags
-            .split(",")
-            .includes(tag)
-              ? "grid"
-              : "none";
-        }
-      });
+      if (tag === "all") {
+        selected.clear();
+      } else if (selected.has(tag)) {
+        selected.delete(tag);
+      } else {
+        selected.add(tag);
+      }
+      applyFilter();
     });
   });
+
+  // keep the list at least two rows tall, so that a short result does not make the page jump;
+  // measure with all things shown, then re-apply the filter (no repaint happens in between)
+  let measuredWidth = 0;
+  const setMinHeight = () => {
+    if (things.length === 0) {
+      return;
+    }
+    measuredWidth = thingList.clientWidth;
+    things.forEach(thing => {
+      thing.hidden = false;
+    });
+    const rowTops = [...new Set(things.map(thing => thing.offsetTop))].sort((a, b) => a - b);
+    const secondRowTop = rowTops[Math.min(1, rowTops.length - 1)];
+    const twoRowsBottom = Math.max(...things.filter(thing => thing.offsetTop <= secondRowTop).map(thing => thing.offsetTop + thing.offsetHeight));
+    thingList
+      .style
+      .setProperty("--thing-list-min-h", `${twoRowsBottom}px`);
+    applyFilter();
+  };
+
+  // re-measure only when the width changes (column count and card heights depend on it)
+  window.addEventListener("resize", () => {
+    if (thingList.clientWidth !== measuredWidth) {
+      setMinHeight();
+    }
+  }, {passive: true});
+  // web fonts change the card heights after they load
+  document
+    .fonts
+    .ready
+    .then(setMinHeight);
+  setMinHeight();
 </script>

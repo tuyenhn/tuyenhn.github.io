@@ -72,7 +72,7 @@ export default async function (eleventyConfig) {
         const lbl_color = (typeof color === 'undefined') ? colorMap[taglabel] : color;
 
         return `
-        <div class="inline-block relative py-1 my-0.5 text-sm">
+        <div class="tag-label inline-block relative py-1 my-0.5 text-sm" data-tag="${taglabel}">
             <div class="absolute inset-0 text-${lbl_color}-200 flex">
                 <svg height="100%" viewBox="0 0 50 100">
                     <path
