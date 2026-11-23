@@ -6,12 +6,30 @@ body {
   @apply tracking-wide font-[Montserrat] font-normal bg-gray-100;
 }
 
+/* wrapper for tab bar + page card; top padding gives space above the tabs */
+#page {
+  @apply pt-12 md:pt-20 lg:mx-56 md:mx-24;
+}
+
 #innerBody {
-  @apply px-8 md:px-20 py-10 bg-white lg:mx-56 md:mx-24 grid grid-cols-1 gap-y-10;
+  @apply px-8 md:px-20 py-10 bg-white grid grid-cols-1 gap-y-10;
 }
 
 a {
   @apply underline text-blue-500;
+}
+
+/* folder-style tabs; the active tab is white so it joins the page card */
+#tab-bar {
+  @apply flex gap-x-1 px-4 md:px-8;
+}
+
+.tab {
+  @apply font-[Yomogi] text-xl md:text-2xl px-5 pt-1.5 pb-1 rounded-t-lg bg-gray-200 text-gray-600 no-underline transition hover:bg-gray-300 hover:text-gray-900;
+}
+
+.tab[aria-current="page"] {
+  @apply bg-white text-gray-900;
 }
 
 section {
@@ -22,6 +40,11 @@ section {
       @apply inline-flex h-[1em] w-[1em] relative top-[-0.125em];
     }
   }
+
+  p {
+    @apply text-lg;
+  }
+
   li {
     @apply list-disc my-0.5 text-lg;
 
@@ -33,7 +56,7 @@ section {
 
 #tag-btn-list {
   @apply mb-5 flex flex-row flex-wrap justify-evenly gap-x-1 lg:gap-x-3 border border-gray-200 rounded-lg p-3;
-  
+
   .tag-btn {
     @apply hover:cursor-pointer min-w-16 my-1;
   }
