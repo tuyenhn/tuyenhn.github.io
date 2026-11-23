@@ -2,11 +2,11 @@
 /* safelisting classes for tags */
 @source inline("{text,bg}-{red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose,slate,gray,zinc,neutral,stone}-{200,500}");
 
-/* fonts: `font-display` for tabs and headings, `font-post-title` for the title on a blog post page;
+/* fonts: `font-display` for tabs and page headings, `font-post-heading` for the title and headings of a blog post;
    to change one, edit its line here and the Google Fonts link in `base.njk` */
 @theme {
   --font-display: "Yomogi", cursive;
-  --font-post-title: "Fira Mono", ui-monospace, monospace;
+  --font-post-heading: "Fira Mono", ui-monospace, monospace;
 }
 
 body {
@@ -243,7 +243,7 @@ section {
   @apply mb-8 pb-4 border-b border-gray-200;
 
   h1 {
-    @apply font-post-title text-3xl md:text-5xl;
+    @apply font-post-heading text-3xl md:text-5xl;
   }
 
   time {
@@ -259,10 +259,19 @@ section {
     @apply mt-4;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-post-heading;
+  }
+
   /* the post title is the page h1, so sections should use `##`; a `#` heading looks the same as `##` */
   h1,
   h2 {
-    @apply mt-10 font-display text-2xl md:text-4xl;
+    @apply mt-10 text-2xl md:text-4xl;
   }
 
   h3 {
