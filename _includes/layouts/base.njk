@@ -10,7 +10,7 @@
       href="/assets/styles.css"
       rel="stylesheet"
     />
-    <title>{{ title }}</title>
+    <title>{{ title }}{% if isPost %} | Tuyen Huynh{% endif %}</title>
     <link
       rel="preconnect"
       href="https://fonts.googleapis.com"
@@ -26,6 +26,29 @@
     />
   </head>
   <body>
+    {# closable tab for a blog post, like a browser tab; the script below clones the `post-tab-template` copy #}
+    {% macro postTab(url, title, active) %}
+      <div
+        class="tab post-tab{% if active %} is-active{% endif %}"
+        data-url="{{ url }}"
+        data-title="{{ title }}">
+        <a
+          href="{{ url }}"
+          class="post-tab-link"
+          title="{{ title }}"
+          {% if active %}aria-current="page"{% endif %}>
+          {% lucide "file-text" %}
+          <span class="post-tab-title">{{ title }}</span>
+        </a>
+        <button
+          type="button"
+          class="post-tab-close"
+          aria-label="Close tab: {{ title }}"
+          title="Close tab">
+          {% lucide "x" %}
+        </button>
+      </div>
+    {% endmacro %}
     <div id="page">
       {# tab bar; each page sets `tab` in its front matter to mark the active tab #}
       {%
@@ -48,7 +71,120 @@
             class="tab"
             {% if t.id == tab %}aria-current="page"{% endif %}>{{ t.id }}</a>
         {% endfor %}
+        {# a post page shows its own tab; the script adds the other posts opened in this browser tab #}
+        {% if isPost %}
+          {{ postTab(page.url, title, true) }}
+        {% endif %}
       </nav>
+      <template id="post-tab-template">
+        {{ postTab("", "", false) }}
+      </template>
+      {# post tabs: each post the visitor opens keeps a tab until they close it, like a browser tab;
+         the list of open tabs is in sessionStorage, so it lasts until the browser tab is closed #}
+      <script>
+      (() => {
+          const storageKey = "open-post-tabs";
+          const tabBar = document.getElementById("tab-bar");
+          const tabTemplate = document.getElementById("post-tab-template");
+          // tab of the post on this page (from the server); null on other pages
+          const currentTab = tabBar.querySelector(".post-tab.is-active");
+
+          const readTabs = () => {
+            try {
+              const tabs = JSON.parse(sessionStorage.getItem(storageKey));
+              return Array.isArray(tabs)
+                ? tabs.filter(tab => typeof tab?.url === "string" && tab.url.startsWith("/blog/") && typeof tab.title === "string")
+                : [];
+            } catch {
+              return [];
+            }
+          };
+
+          const writeTabs = tabs => {
+            try {
+              sessionStorage.setItem(storageKey, JSON.stringify(tabs));
+            } catch {
+              // storage is blocked; the tabs then last for this page only
+            }
+          };
+
+          const makeTab = ({url, title}) => {
+            const tab = tabTemplate.content.firstElementChild.cloneNode(true);
+            tab.dataset.url = url;
+            tab.dataset.title = title;
+            const link = tab.querySelector(".post-tab-link");
+            link.href = url;
+            link.title = title;
+            tab.querySelector(".post-tab-title").textContent = title;
+            tab.querySelector(".post-tab-close").setAttribute("aria-label", `Close tab: ${title}`);
+            return tab;
+          };
+
+          // open the tab of this page's post (at the end, if it is new), then rebuild the post tabs in order
+          const renderTabs = () => {
+            const tabs = readTabs();
+            if (currentTab) {
+              const entry = {url: currentTab.dataset.url, title: currentTab.dataset.title};
+              const index = tabs.findIndex(tab => tab.url === entry.url);
+              if (index === -1) {
+                tabs.push(entry);
+              } else {
+                tabs[index] = entry;
+              }
+              writeTabs(tabs);
+            }
+            tabBar.querySelectorAll(".post-tab:not(.is-active)").forEach(tab => tab.remove());
+            tabs.forEach(tab => {
+              tabBar.append(tab.url === currentTab?.dataset.url ? currentTab : makeTab(tab));
+            });
+          };
+
+          // close a tab; closing the active tab opens the tab on its right, else the tab on its left, else the blog list
+          tabBar.addEventListener("click", event => {
+            const closeBtn = event.target.closest(".post-tab-close");
+            if (!closeBtn) {
+              return;
+            }
+            const tab = closeBtn.closest(".post-tab");
+            const postTabs = [...tabBar.querySelectorAll(".post-tab")];
+            const index = postTabs.indexOf(tab);
+            writeTabs(readTabs().filter(t => t.url !== tab.dataset.url));
+            if (tab === currentTab) {
+              const next = postTabs[index + 1] ?? postTabs[index - 1];
+              // `replace`, so that the Back button does not open the closed post again
+              window.location.replace(next ? next.dataset.url : "/blog/");
+            } else {
+              tab.remove();
+            }
+          });
+
+          // when the tab strip overflows (narrow screen), scroll the strip (not the page) so that the active post tab shows
+          const showCurrentTab = () => {
+            if (!currentTab) {
+              return;
+            }
+            const hidden = currentTab.getBoundingClientRect().right - tabBar.getBoundingClientRect().right;
+            if (hidden > 0) {
+              tabBar.scrollLeft += hidden + parseFloat(getComputedStyle(tabBar).paddingRight);
+            }
+          };
+
+          renderTabs();
+          showCurrentTab();
+          // web fonts change the tab widths after they load
+          document
+            .fonts
+            .ready
+            .then(showCurrentTab);
+          // a page restored by the Back/Forward buttons keeps its old tabs; rebuild them
+          window.addEventListener("pageshow", event => {
+            if (event.persisted) {
+              renderTabs();
+              showCurrentTab();
+            }
+          });
+        })();
+      </script>
       <main id="innerBody">
         {{ content | safe }}
       </main>

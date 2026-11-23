@@ -1,11 +1,50 @@
 ---
-title: Blog | Tuyen Huynh personal website
+title: Blog | Tuyen Huynh
 layout: layouts/base.njk
 tab: blog
+eleventyImport:
+  collections: ["posts"]
 ---
 <section>
   <h1>
     {% lucide "notebook-pen" %} Blog
   </h1>
-  <p>No posts yet. Check back soon!</p>
+  {% if collections.posts.length %}
+    {# one row per post: thumbnail, title, date, and the description (or the start of the post) #}
+    <div id="post-list">
+      {% for post in collections.posts %}
+        <a
+          href="{{ post.url }}"
+          class="post-row">
+          {% if post.data.thumbnail %}
+            <img
+              src="{{ post.data.thumbnail | postAsset(post.url) }}"
+              alt=""
+              class="post-thumb"
+              loading="lazy"
+            />
+          {% else %}
+            <div class="post-thumb post-thumb-empty">
+              {% lucide "notebook-pen" %}
+            </div>
+          {% endif %}
+          <div class="post-info">
+            <h2>{{ post.data.title }}</h2>
+            <time datetime="{{ post.date | isoDate }}">{{
+              post.date | readableDate
+            }}</time>
+            <p>
+              {%- if post.data.description -%}
+                {{ post.data.description }}
+              {%- else -%}
+                {{ post.content | excerpt | safe }}
+              {%- endif -%}
+            </p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No posts yet. Check back soon!</p>
+  {% endif %}
 </section>

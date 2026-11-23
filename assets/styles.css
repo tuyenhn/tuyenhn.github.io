@@ -6,9 +6,9 @@ body {
   @apply tracking-wide font-[Montserrat] font-normal bg-gray-100;
 }
 
-/* wrapper for tab bar + page card; top padding gives space above the tabs */
+/* wrapper for tab bar + page card; top padding gives space above the tabs (the tab bar adds 0.5rem more) */
 #page {
-  @apply pt-12 md:pt-20 lg:mx-56 md:mx-24;
+  @apply pt-10 md:pt-18 lg:mx-56 md:mx-24;
 }
 
 /* page card; it sits above the back tabs, so its upward shadow falls on them */
@@ -23,21 +23,26 @@ a {
   @apply underline text-blue-500;
 }
 
-/* folder-style tabs; the active tab is white, taller, and joins the page card */
+/* folder-style tabs; the active tab is white, taller, and joins the page card;
+   when the tabs do not fit (many open posts on a narrow screen), the bar scrolls sideways like a browser tab strip;
+   `pt-2` keeps the upward tab shadows inside the scroll box */
 #tab-bar {
-  @apply flex items-end gap-x-1 px-4 md:px-8;
+  @apply flex items-end gap-x-1 px-4 md:px-8 pt-2 overflow-x-auto;
+  scrollbar-width: none;
 }
 
 /* back tabs: darker toward the base, as if tucked behind the card; they rise a little on hover */
 .tab {
-  @apply relative font-[Yomogi] text-xl md:text-2xl px-5 pt-1 pb-1 rounded-t-lg bg-linear-to-b from-gray-200 to-gray-300 text-gray-600 no-underline transition-all hover:pt-1.5 hover:from-gray-100 hover:to-gray-200 hover:text-gray-900;
+  @apply relative shrink-0 whitespace-nowrap font-[Yomogi] text-xl md:text-2xl px-5 pt-1 pb-1 rounded-t-lg bg-linear-to-b from-gray-200 to-gray-300 text-gray-600 no-underline transition-all hover:pt-1.5 hover:from-gray-100 hover:to-gray-200 hover:text-gray-900;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.7),
     0 -1px 3px rgb(0 0 0 / 0.1);
 }
 
-/* front tab: sits above the card, casts a shadow up and to the sides, and flares into the card at its base */
-.tab[aria-current="page"] {
+/* front tab: sits above the card, casts a shadow up and to the sides, and flares into the card at its base;
+   `.is-active` marks an open blog post tab (its link, not the tab, has `aria-current`) */
+.tab[aria-current="page"],
+.tab.is-active {
   @apply z-2 pt-2 bg-none bg-white text-gray-900;
   box-shadow: none;
   filter: drop-shadow(0 -2px 3px rgb(0 0 0 / 0.1));
@@ -59,6 +64,32 @@ a {
   &::after {
     @apply -right-2;
     background: radial-gradient(circle at 100% 0, transparent 0.5rem, var(--color-white) calc(0.5rem + 0.5px));
+  }
+}
+
+/* blog post tabs: like browser tabs, all have the same width and shrink evenly when space runs out;
+   the title truncates, the close button sits at the right edge, and `min-w-20` keeps room for the icon and the close button */
+.post-tab {
+  @apply flex items-center gap-x-1 shrink basis-64 min-w-20 pl-4 pr-2;
+}
+
+.post-tab-link {
+  @apply flex grow items-center gap-x-1.5 min-w-0 text-inherit no-underline;
+
+  svg {
+    @apply shrink-0 h-[0.8em] w-[0.8em];
+  }
+}
+
+.post-tab-title {
+  @apply truncate;
+}
+
+.post-tab-close {
+  @apply shrink-0 p-0.5 rounded-full cursor-pointer text-gray-500 transition hover:bg-gray-900/10 hover:text-gray-900;
+
+  svg {
+    @apply h-4 w-4;
   }
 }
 
@@ -151,5 +182,141 @@ section {
 
   :not(#thing-tags):not(#title) {
     @apply text-sm;
+  }
+}
+
+/* blog list: one row per post (thumbnail, title, date, and a summary cut to two lines) */
+#post-list {
+  @apply grid grid-cols-1 gap-y-3;
+}
+
+.post-row {
+  @apply flex items-start gap-x-4 md:gap-x-6 p-3 md:p-4 rounded-lg border border-gray-200 bg-white text-inherit no-underline transition hover:shadow-lg hover:border-gray-300;
+
+  h2 {
+    @apply font-bold text-lg md:text-xl leading-snug transition;
+  }
+
+  &:hover h2 {
+    @apply text-blue-500;
+  }
+
+  time {
+    @apply block mt-0.5 text-sm text-gray-500;
+  }
+
+  p {
+    @apply mt-1 text-base text-gray-700 line-clamp-2;
+  }
+}
+
+.post-thumb {
+  @apply shrink-0 w-24 h-18 md:w-40 md:h-28 rounded-md object-cover bg-gray-100;
+}
+
+/* placeholder for a post without a thumbnail */
+.post-thumb-empty {
+  @apply flex items-center justify-center text-gray-400;
+
+  svg {
+    @apply h-8 w-8;
+  }
+}
+
+.post-info {
+  @apply min-w-0;
+}
+
+/* blog post page; `min-w-0` stops wide content (code, tables) from stretching the page card */
+.post {
+  @apply min-w-0;
+}
+
+.post-header {
+  @apply mb-8 pb-4 border-b border-gray-200;
+
+  h1 {
+    @apply font-[Yomogi] text-3xl md:text-5xl;
+  }
+
+  time {
+    @apply block mt-2 text-gray-500;
+  }
+}
+
+/* rendered Markdown; Tailwind resets the browser styles, so the usual elements get their styles here */
+.post-body {
+  @apply text-lg leading-relaxed text-gray-800;
+
+  > * + * {
+    @apply mt-4;
+  }
+
+  /* the post title is the page h1, so sections should use `##`; a `#` heading looks the same as `##` */
+  h1,
+  h2 {
+    @apply mt-10 font-[Yomogi] text-2xl md:text-4xl;
+  }
+
+  h3 {
+    @apply mt-8 font-bold text-xl md:text-2xl;
+  }
+
+  h4 {
+    @apply mt-6 font-bold text-lg;
+  }
+
+  ul {
+    @apply list-disc pl-6;
+  }
+
+  ol {
+    @apply list-decimal pl-6;
+  }
+
+  li {
+    @apply my-1;
+  }
+
+  blockquote {
+    @apply border-l-4 border-gray-300 pl-4 italic text-gray-600;
+  }
+
+  code {
+    @apply rounded bg-gray-100 px-1 py-0.5 font-mono text-[0.875em];
+  }
+
+  pre {
+    @apply overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm leading-normal text-gray-100;
+
+    code {
+      @apply bg-transparent p-0 text-inherit;
+    }
+  }
+
+  img {
+    @apply block max-w-full h-auto mx-auto rounded-md;
+  }
+
+  figcaption {
+    @apply mt-2 text-center text-sm text-gray-500;
+  }
+
+  hr {
+    @apply my-8 border-gray-200;
+  }
+
+  /* `block` + `overflow-x-auto` lets a wide table scroll on its own */
+  table {
+    @apply block overflow-x-auto border-collapse text-base;
+  }
+
+  th,
+  td {
+    @apply border border-gray-200 px-3 py-1.5 text-left;
+  }
+
+  th {
+    @apply bg-gray-50 font-semibold;
   }
 }
