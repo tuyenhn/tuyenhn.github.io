@@ -10,7 +10,7 @@
       href="/assets/styles.css"
       rel="stylesheet"
     />
-    <title>Blog | Tuyen Huynh personal website</title>
+    <title>Blog | Tuyen Huynh</title>
     <link
       rel="preconnect"
       href="https://fonts.googleapis.com"
@@ -26,6 +26,8 @@
     />
   </head>
   <body>
+    
+    
     <div id="page">
       
       
@@ -43,13 +45,167 @@
             class="tab"
             aria-current="page">blog</a>
         
+        
+        
       </nav>
+      <template id="post-tab-template">
+        
+      <div
+        class="tab post-tab"
+        data-url=""
+        data-title="">
+        <a
+          href=""
+          class="post-tab-link"
+          title=""
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v4a2 2 0 0 0 2 2h4" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg>
+          <span class="post-tab-title"></span>
+        </a>
+        <button
+          type="button"
+          class="post-tab-close"
+          aria-label="Close tab: "
+          title="Close tab">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
+      </div>
+    
+      </template>
+      
+      <script>
+      (() => {
+          const storageKey = "open-post-tabs";
+          const tabBar = document.getElementById("tab-bar");
+          const tabTemplate = document.getElementById("post-tab-template");
+          // tab of the post on this page (from the server); null on other pages
+          const currentTab = tabBar.querySelector(".post-tab.is-active");
+
+          const readTabs = () => {
+            try {
+              const tabs = JSON.parse(sessionStorage.getItem(storageKey));
+              return Array.isArray(tabs)
+                ? tabs.filter(tab => typeof tab?.url === "string" && tab.url.startsWith("/blog/") && typeof tab.title === "string")
+                : [];
+            } catch {
+              return [];
+            }
+          };
+
+          const writeTabs = tabs => {
+            try {
+              sessionStorage.setItem(storageKey, JSON.stringify(tabs));
+            } catch {
+              // storage is blocked; the tabs then last for this page only
+            }
+          };
+
+          const makeTab = ({url, title}) => {
+            const tab = tabTemplate.content.firstElementChild.cloneNode(true);
+            tab.dataset.url = url;
+            tab.dataset.title = title;
+            const link = tab.querySelector(".post-tab-link");
+            link.href = url;
+            link.title = title;
+            tab.querySelector(".post-tab-title").textContent = title;
+            tab.querySelector(".post-tab-close").setAttribute("aria-label", `Close tab: ${title}`);
+            return tab;
+          };
+
+          // open the tab of this page's post (at the end, if it is new), then rebuild the post tabs in order
+          const renderTabs = () => {
+            const tabs = readTabs();
+            if (currentTab) {
+              const entry = {url: currentTab.dataset.url, title: currentTab.dataset.title};
+              const index = tabs.findIndex(tab => tab.url === entry.url);
+              if (index === -1) {
+                tabs.push(entry);
+              } else {
+                tabs[index] = entry;
+              }
+              writeTabs(tabs);
+            }
+            tabBar.querySelectorAll(".post-tab:not(.is-active)").forEach(tab => tab.remove());
+            tabs.forEach(tab => {
+              tabBar.append(tab.url === currentTab?.dataset.url ? currentTab : makeTab(tab));
+            });
+          };
+
+          // close a tab; closing the active tab opens the tab on its right, else the tab on its left, else the blog list
+          tabBar.addEventListener("click", event => {
+            const closeBtn = event.target.closest(".post-tab-close");
+            if (!closeBtn) {
+              return;
+            }
+            const tab = closeBtn.closest(".post-tab");
+            const postTabs = [...tabBar.querySelectorAll(".post-tab")];
+            const index = postTabs.indexOf(tab);
+            writeTabs(readTabs().filter(t => t.url !== tab.dataset.url));
+            if (tab === currentTab) {
+              const next = postTabs[index + 1] ?? postTabs[index - 1];
+              // `replace`, so that the Back button does not open the closed post again
+              window.location.replace(next ? next.dataset.url : "/blog/");
+            } else {
+              tab.remove();
+            }
+          });
+
+          // when the tab strip overflows (narrow screen), scroll the strip (not the page) so that the active post tab shows
+          const showCurrentTab = () => {
+            if (!currentTab) {
+              return;
+            }
+            const hidden = currentTab.getBoundingClientRect().right - tabBar.getBoundingClientRect().right;
+            if (hidden > 0) {
+              tabBar.scrollLeft += hidden + parseFloat(getComputedStyle(tabBar).paddingRight);
+            }
+          };
+
+          renderTabs();
+          showCurrentTab();
+          // web fonts change the tab widths after they load
+          document
+            .fonts
+            .ready
+            .then(showCurrentTab);
+          // a page restored by the Back/Forward buttons keeps its old tabs; rebuild them
+          window.addEventListener("pageshow", event => {
+            if (event.persisted) {
+              renderTabs();
+              showCurrentTab();
+            }
+          });
+        })();
+      </script>
       <main id="innerBody">
         <section>
   <h1>
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" /><path d="M2 6h4" /><path d="M2 10h4" /><path d="M2 14h4" /><path d="M2 18h4" /><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" /></svg> Blog
   </h1>
-  <p>No posts yet. Check back soon!</p>
+  
+    
+    <div id="post-list">
+      
+        <a
+          href="/blog/hello-world/"
+          class="post-row">
+          
+            <img
+              src="/blog/hello-world/cover.svg"
+              alt=""
+              class="post-thumb"
+              loading="lazy"
+            />
+          
+          <div class="post-info">
+            <h2>Hello, world</h2>
+            <time datetime="2026-11-23">23 November 2026</time>
+            <p>This is an example post. It shows how a post looks on the blog list and on its own page. The blog list shows the first two lines of this paragraph, because the front matter has no description. Posts are plain Markdown. Put images in the post folder and link them with a relative path, for example…</p>
+          </div>
+        </a>
+      
+    </div>
+  
 </section>
 
       </main>
