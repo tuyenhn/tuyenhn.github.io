@@ -57,11 +57,23 @@ export const config = {
 // Blog posts: one folder per post, `blog/<slug>/index.md` (or `.mdx`); images go in the same folder
 const blogPostGlob = "blog/*/index.{md,mdx}";
 
+// Dates show as calendar days in this time zone. A YAML date (`2026-11-23`) is UTC midnight, which is the same day here;
+// a real timestamp (`date: Render`, `git Created`, `Last Modified`) shows the local day, not the UTC day.
+// (Keep a time zone at UTC or east of it: west of UTC, a YAML date would show as the day before.)
+const siteTimeZone = "Asia/Ho_Chi_Minh";
+
 const postDateFormat = new Intl.DateTimeFormat("en-GB", {
     day: "numeric",
     month: "long",
     year: "numeric",
-    timeZone: "UTC"
+    timeZone: siteTimeZone
+});
+
+const isoDateFormat = new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    timeZone: siteTimeZone
 });
 
 export default async function (eleventyConfig) {
@@ -76,9 +88,19 @@ export default async function (eleventyConfig) {
     // Copy the images that sit next to the posts (thumbnails, figures)
     eleventyConfig.addPassthroughCopy("blog/**/*.{png,jpg,jpeg,gif,webp,avif,svg}");
 
+    // `date: Render` in front matter: the date of the build. It changes each time the site is rendered.
+    eleventyConfig.addDateParsing((dateValue) => {
+        if (typeof dateValue === "string" && dateValue.toLowerCase() === "render") {
+            return new Date();
+        }
+    });
+
     // Post dates: "23 November 2026" for display, "2026-11-23" for `<time datetime>`
     eleventyConfig.addFilter("readableDate", (date) => postDateFormat.format(date));
-    eleventyConfig.addFilter("isoDate", (date) => date.toISOString().slice(0, 10));
+    eleventyConfig.addFilter("isoDate", (date) => {
+        const parts = Object.fromEntries(isoDateFormat.formatToParts(date).map((part) => [part.type, part.value]));
+        return `${parts.year}-${parts.month}-${parts.day}`;
+    });
 
     // A path relative to the post folder (`cover.jpg`) becomes `/blog/<slug>/cover.jpg`;
     // absolute paths (`/assets/x.png`) and full URLs stay as they are
