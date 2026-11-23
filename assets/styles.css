@@ -32,6 +32,19 @@ a {
   @apply bg-white text-gray-900;
 }
 
+/* scroll-to-top button; `invisible` also takes it out of keyboard focus while hidden */
+#scroll-top-btn {
+  @apply fixed bottom-6 right-6 md:bottom-10 md:right-10 z-20 p-3 rounded-full bg-white text-gray-700 border border-gray-200 shadow-lg cursor-pointer opacity-0 invisible translate-y-2 transition hover:bg-gray-100 hover:text-gray-900;
+
+  svg {
+    @apply h-6 w-6;
+  }
+
+  &.is-shown {
+    @apply opacity-100 visible translate-y-0;
+  }
+}
+
 section {
   h1 {
     @apply font-[Yomogi] md:text-5xl text-3xl mb-4;
