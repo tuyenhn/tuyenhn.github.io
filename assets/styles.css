@@ -11,25 +11,55 @@ body {
   @apply pt-12 md:pt-20 lg:mx-56 md:mx-24;
 }
 
+/* page card; it sits above the back tabs, so its upward shadow falls on them */
 #innerBody {
-  @apply px-8 md:px-20 py-10 bg-white grid grid-cols-1 gap-y-10;
+  @apply relative z-1 px-8 md:px-20 py-10 bg-white grid grid-cols-1 gap-y-10;
+  box-shadow:
+    0 -1px 4px rgb(0 0 0 / 0.08),
+    0 8px 20px -6px rgb(0 0 0 / 0.12);
 }
 
 a {
   @apply underline text-blue-500;
 }
 
-/* folder-style tabs; the active tab is white so it joins the page card */
+/* folder-style tabs; the active tab is white, taller, and joins the page card */
 #tab-bar {
-  @apply flex gap-x-1 px-4 md:px-8;
+  @apply flex items-end gap-x-1 px-4 md:px-8;
 }
 
+/* back tabs: darker toward the base, as if tucked behind the card; they rise a little on hover */
 .tab {
-  @apply font-[Yomogi] text-xl md:text-2xl px-5 pt-1.5 pb-1 rounded-t-lg bg-gray-200 text-gray-600 no-underline transition hover:bg-gray-300 hover:text-gray-900;
+  @apply relative font-[Yomogi] text-xl md:text-2xl px-5 pt-1 pb-1 rounded-t-lg bg-linear-to-b from-gray-200 to-gray-300 text-gray-600 no-underline transition-all hover:pt-1.5 hover:from-gray-100 hover:to-gray-200 hover:text-gray-900;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.7),
+    0 -1px 3px rgb(0 0 0 / 0.1);
 }
 
+/* front tab: sits above the card, casts a shadow up and to the sides, and flares into the card at its base */
 .tab[aria-current="page"] {
-  @apply bg-white text-gray-900;
+  @apply z-2 pt-2 bg-none bg-white text-gray-900;
+  box-shadow: none;
+  filter: drop-shadow(0 -2px 3px rgb(0 0 0 / 0.1));
+  /* cut the shadow at the base so that no line shows where the tab meets the card */
+  clip-path: inset(-1rem -1rem 0 -1rem);
+
+  /* concave corners that curve the tab sides out into the card edge */
+  &::before,
+  &::after {
+    content: "";
+    @apply absolute bottom-0 size-2;
+  }
+
+  &::before {
+    @apply -left-2;
+    background: radial-gradient(circle at 0 0, transparent 0.5rem, var(--color-white) calc(0.5rem + 0.5px));
+  }
+
+  &::after {
+    @apply -right-2;
+    background: radial-gradient(circle at 100% 0, transparent 0.5rem, var(--color-white) calc(0.5rem + 0.5px));
+  }
 }
 
 /* scroll-to-top button; `invisible` also takes it out of keyboard focus while hidden */
