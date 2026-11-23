@@ -2,6 +2,13 @@
 /* safelisting classes for tags */
 @source inline("{text,bg}-{red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose,slate,gray,zinc,neutral,stone}-{200,500}");
 
+/* fonts: `font-display` for tabs and headings, `font-post-title` for the title on a blog post page;
+   to change one, edit its line here and the Google Fonts link in `base.njk` */
+@theme {
+  --font-display: "Yomogi", cursive;
+  --font-post-title: "Fira Mono", ui-monospace, monospace;
+}
+
 body {
   @apply tracking-wide font-[Montserrat] font-normal bg-gray-100;
 }
@@ -33,7 +40,7 @@ a {
 
 /* back tabs: darker toward the base, as if tucked behind the card; they rise a little on hover */
 .tab {
-  @apply relative shrink-0 whitespace-nowrap font-[Yomogi] text-xl md:text-2xl px-5 pt-1 pb-1 rounded-t-lg bg-linear-to-b from-gray-200 to-gray-300 text-gray-600 no-underline transition-all hover:pt-1.5 hover:from-gray-100 hover:to-gray-200 hover:text-gray-900;
+  @apply relative shrink-0 whitespace-nowrap font-display text-xl md:text-2xl px-5 pt-1 pb-1 rounded-t-lg bg-linear-to-b from-gray-200 to-gray-300 text-gray-600 no-underline transition-all hover:pt-1.5 hover:from-gray-100 hover:to-gray-200 hover:text-gray-900;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.7),
     0 -1px 3px rgb(0 0 0 / 0.1);
@@ -108,7 +115,7 @@ a {
 
 section {
   h1 {
-    @apply font-[Yomogi] md:text-5xl text-3xl mb-4;
+    @apply font-display md:text-5xl text-3xl mb-4;
 
     svg {
       @apply inline-flex h-[1em] w-[1em] relative top-[-0.125em];
@@ -236,7 +243,7 @@ section {
   @apply mb-8 pb-4 border-b border-gray-200;
 
   h1 {
-    @apply font-[Yomogi] text-3xl md:text-5xl;
+    @apply font-post-title text-3xl md:text-5xl;
   }
 
   time {
@@ -255,7 +262,7 @@ section {
   /* the post title is the page h1, so sections should use `##`; a `#` heading looks the same as `##` */
   h1,
   h2 {
-    @apply mt-10 font-[Yomogi] text-2xl md:text-4xl;
+    @apply mt-10 font-display text-2xl md:text-4xl;
   }
 
   h3 {
