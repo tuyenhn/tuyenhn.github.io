@@ -14,6 +14,8 @@ isPost: true
     {{ content | safe }}
   </div>
 </article>
+{# progress tracker at the right of the window: a line for each heading, and a box with the headings on hover #}
+{% include "progress-tracker.njk" %}
 {# footnote preview: with a mouse, hover over a footnote number to see the footnote in a box (move into the box to click its links);
    with the keyboard, focus the number; on a touch screen, the first tap shows the box and a second tap jumps to the footnote #}
 <script>

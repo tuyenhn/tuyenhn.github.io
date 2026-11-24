@@ -421,4 +421,74 @@ section {
   }
 }
 
+/* progress tracker of a blog post (made by `_includes/progress-tracker.njk`), like the outline at the right of a Notion page:
+   a short line for each heading, at the right edge of the window, in the middle of its height; the deeper the heading, the shorter the line.
+   It shows only on screens `md` and wider, because a narrow screen has no space at the sides of the page card. Not on paper */
+.progress-tracker {
+  @apply fixed top-1/2 right-6 md:right-10 z-20 hidden md:block -translate-y-1/2 print:hidden;
+
+  /* hover over the lines, or Tab to a heading: the box with the headings opens over the lines.
+     `:focus-visible`, not `:focus-within`: after a mouse click, the box closes when the mouse moves away */
+  &:hover,
+  &:has(:focus-visible) {
+    .progress-tracker-lines {
+      @apply opacity-0;
+    }
+
+    .progress-tracker-panel {
+      @apply pointer-events-auto translate-x-0 opacity-100;
+    }
+  }
+}
+
+/* the padding makes the hover area larger than the thin lines */
+.progress-tracker-lines {
+  @apply flex flex-col items-end gap-2 p-2 max-h-[80svh] overflow-hidden transition-opacity duration-150 motion-reduce:transition-none;
+}
+
+/* the sections below the section on the screen are light grey, the sections above it are grey, and the section on the screen is dark */
+.progress-tracker-line {
+  @apply shrink-0 h-0.5 w-6 rounded-full bg-gray-300 transition-colors;
+
+  &[data-level="2"] {
+    @apply w-4;
+  }
+
+  &[data-level="3"] {
+    @apply w-2.5;
+  }
+
+  &.is-read {
+    @apply bg-gray-400;
+  }
+
+  &.is-active {
+    @apply bg-gray-800;
+  }
+}
+
+/* the box with the headings; it is in the middle of the lines, at their right edge.
+   Closed, it is transparent and the mouse goes through it, but it stays in the page, so that Tab and screen readers find the headings */
+.progress-tracker-panel {
+  @apply absolute top-1/2 right-0 w-64 max-h-[70svh] -translate-y-1/2 translate-x-1 overflow-y-auto overscroll-contain rounded-lg border border-gray-200 bg-white p-1.5 shadow-lg pointer-events-none opacity-0 transition duration-150 motion-reduce:transition-none;
+}
+
+/* a heading in the box; a long heading goes on to the next line; the deeper the heading, the larger the indent.
+   `aria-current` marks the section on the screen */
+.progress-tracker-link {
+  @apply block rounded px-2 py-1 text-sm leading-snug text-gray-500 no-underline transition-colors hover:bg-gray-100 hover:text-gray-900;
+
+  &[data-level="2"] {
+    @apply pl-5;
+  }
+
+  &[data-level="3"] {
+    @apply pl-8;
+  }
+
+  &[aria-current] {
+    @apply font-medium text-blue-500;
+  }
+}
+
 }

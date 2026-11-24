@@ -1,0 +1,149 @@
+{# progress tracker, like the outline at the right of a Notion page: a short line for each heading (`#`, `##`, `###`) of the post,
+   at the right edge of the window. The line of the section on the screen is dark, and the lines of the sections above it are grey.
+   With a mouse, hover over the lines to see the headings in a box; with the keyboard, Tab to the headings. Click a heading to go to its section.
+   It shows only on a post with two or more headings, and only on screens `md` and wider (the layout is `.progress-tracker` in `assets/styles.css`).
+   The headings get their `id` when the site is built (`markdown-it-anchor` for .md, `rehype-slug` for .mdx; see eleventy.config.mjs). #}
+<script>
+  (() => {
+    // the headings of the post text; not the hidden "Footnotes" heading of .mdx, and not the headings in a `<details>` box (closed, it has no position)
+    const headings = [...document.querySelectorAll(".post-body :is(h1, h2, h3)[id]")].filter(heading => !heading.closest(".footnotes, details"));
+    if (headings.length < 2) {
+      return;
+    }
+
+    const tracker = document.createElement("nav");
+    tracker.className = "progress-tracker";
+    tracker.setAttribute("aria-label", "Contents");
+    // the lines are a picture of the list; screen readers read the list
+    const lines = document.createElement("div");
+    lines.className = "progress-tracker-lines";
+    lines.setAttribute("aria-hidden", "true");
+    const panel = document.createElement("ol");
+    panel.className = "progress-tracker-panel";
+    tracker.append(lines, panel);
+
+    // after a click on a heading, its line stays dark until the reader scrolls again:
+    // near the end of the page, the page cannot move a short section to the top, and `update` would then show the last section
+    let clicked = null;
+
+    const items = headings.map(heading => {
+      const level = heading.tagName.slice(1);
+      const line = document.createElement("span");
+      line.className = "progress-tracker-line";
+      line.dataset.level = level;
+      lines.append(line);
+
+      // a copy of the heading text (math too), without its footnote numbers, links, and ids (they must stay unique)
+      const label = heading.cloneNode(true);
+      label.querySelectorAll(".footnote-ref, sup:has(> a[data-footnote-ref])").forEach(el => el.remove());
+      label.querySelectorAll("a").forEach(el => el.replaceWith(...el.childNodes));
+      label.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+      const link = document.createElement("a");
+      link.className = "progress-tracker-link";
+      link.dataset.level = level;
+      link.href = `#${heading.id}`;
+      link.append(...label.childNodes);
+      const listItem = document.createElement("li");
+      listItem.append(link);
+      panel.append(listItem);
+
+      // the .mdx headings have no `tabindex`; with `-1`, the heading can get the focus (below) but is not a Tab stop
+      if (!heading.hasAttribute("tabindex")) {
+        heading.setAttribute("tabindex", "-1");
+      }
+      link.addEventListener("click", event => {
+        // Ctrl/Cmd/Shift + click: the browser opens the link (new tab or window)
+        if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+          return;
+        }
+        event.preventDefault();
+        const lock = {
+          index: items.findIndex(item => item.link === link),
+          y: null
+        };
+        clicked = lock;
+        setActive(lock.index);
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        heading.scrollIntoView({
+          behavior: reduceMotion
+            ? "auto"
+            : "smooth",
+          block: "start"
+        });
+        // `replace`, so that the Back button leaves the post and does not go through its sections
+        history.replaceState(null, "", link.hash);
+        // the next Tab goes on from the heading
+        heading.focus({preventScroll: true});
+        // a browser without the `scrollend` event (or a click that does not scroll): the scroll is done after 1 s
+        setTimeout(() => {
+          if (clicked === lock && lock.y === null) {
+            lock.y = window.scrollY;
+          }
+        }, 1000);
+      });
+      return {line, link};
+    });
+
+    let activeIndex = -1;
+    const setActive = index => {
+      if (index === activeIndex) {
+        return;
+      }
+      activeIndex = index;
+      items.forEach(({line, link}, i) => {
+        line.classList.toggle("is-read", i < index);
+        line.classList.toggle("is-active", i === index);
+        if (i === index) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+      // a long list scrolls in its box: keep the active heading in the middle of the box, but not while the reader uses the box
+      const link = items[index].link;
+      if (panel.scrollHeight > panel.clientHeight && !tracker.matches(":hover")) {
+        panel.scrollTop = link.offsetTop - (panel.clientHeight - link.offsetHeight) / 2;
+      }
+    };
+
+    // the active section: the last heading at or above 80px from the top of the window (a heading that a click moved to the top is at 2rem,
+    // see `scroll-mt` in the styles); at the end of the page, the last heading; above the first heading, the first heading.
+    // A page that is too short to scroll is not "at the end": its first heading is active
+    const update = () => {
+      if (clicked) {
+        if (clicked.y === null || Math.abs(window.scrollY - clicked.y) < 2) {
+          return;
+        }
+        clicked = null;
+      }
+      const atEnd = window.scrollY > 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      const index = atEnd
+        ? headings.length - 1
+        : headings.findLastIndex(heading => heading.getBoundingClientRect().top <= 80);
+      setActive(Math.max(index, 0));
+    };
+
+    // one update for each frame, on scroll, on resize, and when the post changes height (an image loads, a `<details>` box opens)
+    let frame = 0;
+    const scheduleUpdate = () => {
+      if (!frame) {
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          update();
+        });
+      }
+    };
+    window.addEventListener("scroll", scheduleUpdate, {passive: true});
+    window.addEventListener("resize", scheduleUpdate);
+    window.addEventListener("scrollend", () => {
+      if (clicked && clicked.y === null) {
+        clicked.y = window.scrollY;
+      }
+    });
+    new ResizeObserver(scheduleUpdate).observe(document.querySelector(".post-body"));
+
+    // before the page card, so that the Tab order is: tab bar, headings, post
+    document.getElementById("innerBody").before(tracker);
+    update();
+  })();
+</script>
