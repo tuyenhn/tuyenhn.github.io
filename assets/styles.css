@@ -247,7 +247,35 @@ section {
   }
 
   time {
-    @apply block mt-2 text-gray-500;
+    @apply block text-gray-500;
+  }
+}
+
+/* the line below the post title: the date at the left, the reading mode switch at the right (on a narrow screen, below the date) */
+.post-meta {
+  @apply mt-2 flex flex-wrap items-center justify-between gap-x-6 gap-y-2;
+}
+
+/* reading mode switch (plain or presentation; see `_includes/presentation-mode.njk`): two buttons in a grey pill, the selected one is white.
+   The buttons are radio buttons: Tab goes to the selected one, the arrow keys change the selection.
+   On a narrow screen, the pill goes below the label if there is no space for both on one line. Not on paper */
+.reading-mode {
+  @apply flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-500 whitespace-nowrap print:hidden;
+}
+
+.reading-mode-options {
+  @apply inline-flex rounded-full bg-gray-100 p-0.5;
+
+  label {
+    @apply flex items-center gap-x-1.5 cursor-pointer rounded-full px-3 py-1 text-gray-600 transition hover:text-gray-900 has-checked:bg-white has-checked:text-gray-900 has-checked:shadow-sm has-focus-visible:outline-2 has-focus-visible:outline-blue-500;
+  }
+
+  input {
+    @apply sr-only;
+  }
+
+  svg {
+    @apply h-4 w-4 shrink-0;
   }
 }
 
@@ -489,6 +517,17 @@ section {
   &[aria-current] {
     @apply font-medium text-blue-500;
   }
+}
+
+/* presentation mode of a blog post (`_includes/presentation-mode.njk`): the script puts each element of the post in a chunk (`data-chunk`)
+   and marks the elements of the chunk at the middle of the window (`.is-current-chunk`); the other chunks are grey.
+   Plain mode (and paper) shows all of the post */
+.post-body > [data-chunk] {
+  @apply transition-[opacity,filter] duration-300 motion-reduce:transition-none;
+}
+
+.post[data-reading-mode="presentation"] .post-body > [data-chunk]:not(.is-current-chunk) {
+  @apply opacity-25 grayscale print:opacity-100 print:grayscale-0;
 }
 
 }

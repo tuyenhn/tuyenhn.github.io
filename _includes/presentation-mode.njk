@@ -1,0 +1,186 @@
+{# presentation mode of a blog post: the switch in the post header (`.reading-mode` in `layouts/post.njk`) sets plain or presentation mode.
+   In presentation mode, the chunk of the post at the middle of the window is clear, and the other chunks are grey.
+   A chunk is a heading and the text below it, to the next heading of any level (the smallest sections of the post).
+   The text above the first heading is a chunk, and the footnotes at the end are a chunk.
+   A heading with no text below it, directly above a deeper heading (`# Part`, then `## Section`), is in the chunk of that deeper heading.
+   The choice is kept in localStorage, so it is the same on all posts and on the next visit. Without JavaScript, the switch does not show.
+   The styles are `.reading-mode` and `[data-reading-mode="presentation"]` in `assets/styles.css`. #}
+<script>
+  (() => {
+    const article = document.querySelector(".post");
+    const body = article?.querySelector(".post-body");
+    const control = article?.querySelector(".reading-mode");
+    if (!body || !control) {
+      return;
+    }
+
+    // the chunks: lists of the elements of `.post-body`, in order; each element gets `data-chunk` (its chunk number)
+    const chunks = [];
+    // the last chunk has only headings (so far), and the last of them has this level
+    let headingsOnly = false;
+    let lastLevel = 0;
+    let inFootnotes = false;
+    [...body.children].forEach(el => {
+      const level = /^H[1-6]$/.test(el.tagName)
+        ? Number(el.tagName[1])
+        : 0;
+      // the footnotes at the end (.md: `hr.footnotes-sep` and `section.footnotes`, .mdx: `section[data-footnotes]`)
+      const isFootnotes = el.matches(".footnotes-sep, .footnotes, [data-footnotes]");
+      let startsChunk = chunks.length === 0;
+      if (isFootnotes) {
+        startsChunk ||= !inFootnotes;
+        inFootnotes = true;
+      } else if (level > 0 && !inFootnotes) {
+        startsChunk ||= !(headingsOnly && level > lastLevel);
+      }
+      if (startsChunk) {
+        chunks.push([]);
+        headingsOnly = true;
+      }
+      chunks.at(-1).push(el);
+      el.dataset.chunk = chunks.length - 1;
+      if (level > 0 && !isFootnotes) {
+        lastLevel = level;
+      } else {
+        headingsOnly = false;
+      }
+    });
+    // a post with one chunk does not need the switch
+    if (chunks.length < 2) {
+      return;
+    }
+
+    const isPresenting = () => article.dataset.readingMode === "presentation";
+
+    let activeIndex = -1;
+    const setActive = index => {
+      if (index === activeIndex) {
+        return;
+      }
+      activeIndex = index;
+      chunks.forEach((els, i) => els.forEach(el => el.classList.toggle("is-current-chunk", i === index)));
+    };
+
+    // after a click on a link to a part of this post (progress tracker, `[see](#id)`, the ↩ of a footnote), the chunk of that part stays clear
+    // until the reader scrolls again: a short chunk that the link moved to the top of the window is not at the middle of the window
+    let lock = null;
+
+    // the active chunk: the last chunk that starts at or above the focus line. The focus line is at the middle of the window;
+    // near the top of the page it moves up to the top of the window, and near the end it moves down to the bottom,
+    // so that each chunk is active for some part of the scroll, the first chunk at the top of the page, and the last chunk at the end
+    const update = () => {
+      if (!isPresenting()) {
+        return;
+      }
+      if (lock) {
+        if (lock.y === null || Math.abs(window.scrollY - lock.y) < 2) {
+          setActive(lock.index);
+          return;
+        }
+        lock = null;
+      }
+      const height = window.innerHeight;
+      const half = height / 2;
+      const scrolled = Math.max(window.scrollY, 0);
+      const remaining = Math.max(document.documentElement.scrollHeight - height - scrolled, 0);
+      const focus = Math.min(scrolled, half) + Math.max(half - remaining, 0);
+      const index = chunks.findLastIndex(els => {
+        // the first element of the chunk that is in the layout (the `hr.footnotes-sep` is hidden)
+        const first = els.find(el => el.getClientRects().length > 0);
+        return first !== undefined && first.getBoundingClientRect().top <= focus;
+      });
+      setActive(Math.max(index, 0));
+    };
+
+    // one update for each frame, on scroll, on resize, and when the post changes height (an image loads, a `<details>` box opens)
+    let frame = 0;
+    const scheduleUpdate = () => {
+      if (!frame) {
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          update();
+        });
+      }
+    };
+    window.addEventListener("scroll", scheduleUpdate, {passive: true});
+    window.addEventListener("resize", scheduleUpdate);
+    new ResizeObserver(scheduleUpdate).observe(body);
+
+    // the progress tracker stops the default action of its links, but the click still comes here.
+    // Not the footnote numbers: on a touch screen, the first tap only shows the footnote in a box, and the page does not move
+    document.addEventListener("click", event => {
+      const link = event.target.closest?.('a[href^="#"]');
+      if (!isPresenting() || !link || link.matches("[data-footnote-ref], .footnote-ref a")) {
+        return;
+      }
+      // Ctrl/Cmd/Shift + click: the browser opens the link in a new tab or window
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+        return;
+      }
+      let target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      // the element of `.post-body` that holds the target
+      while (target && target.parentElement !== body) {
+        target = target.parentElement;
+      }
+      if (!target?.dataset.chunk) {
+        return;
+      }
+      const current = {
+        index: Number(target.dataset.chunk),
+        y: null
+      };
+      lock = current;
+      setActive(current.index);
+      // a browser without the `scrollend` event (or a click that does not scroll): the scroll is done after 1 s
+      setTimeout(() => {
+        if (lock === current && current.y === null) {
+          current.y = window.scrollY;
+        }
+      }, 1000);
+    });
+    window.addEventListener("scrollend", () => {
+      if (lock && lock.y === null) {
+        lock.y = window.scrollY;
+      }
+    });
+
+    // the mode: "plain" or "presentation"
+    const storageKey = "reading-mode";
+    const readMode = () => {
+      try {
+        return localStorage.getItem(storageKey) === "presentation"
+          ? "presentation"
+          : "plain";
+      } catch {
+        // storage is blocked
+        return "plain";
+      }
+    };
+    const setMode = mode => {
+      article.dataset.readingMode = mode;
+      control.querySelector(`input[value="${mode}"]`).checked = true;
+      lock = null;
+      activeIndex = -1;
+      update();
+    };
+
+    control.addEventListener("change", event => {
+      const mode = event.target.value;
+      try {
+        localStorage.setItem(storageKey, mode);
+      } catch {
+        // storage is blocked; the mode then lasts for this page only
+      }
+      setMode(mode);
+    });
+    // a page restored by the Back/Forward buttons: the reader can have changed the mode on another post
+    window.addEventListener("pageshow", event => {
+      if (event.persisted) {
+        setMode(readMode());
+      }
+    });
+
+    control.hidden = false;
+    setMode(readMode());
+  })();
+</script>
