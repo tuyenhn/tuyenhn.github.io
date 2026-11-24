@@ -24,6 +24,14 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Yomogi&family=Fira+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
+    {# KaTeX styles and fonts for LaTeX math in posts; `katexVersion` is the installed KaTeX version (see eleventy.config.mjs) #}
+    {% if isPost %}
+      <link
+        href="https://cdn.jsdelivr.net/npm/katex@{{ katexVersion }}/dist/katex.min.css"
+        rel="stylesheet"
+        crossorigin="anonymous"
+      />
+    {% endif %}
   </head>
   <body>
     {# closable tab for a blog post, like a browser tab; the script below clones the `post-tab-template` copy #}

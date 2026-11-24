@@ -314,6 +314,11 @@ section {
     @apply block max-w-full h-auto mx-auto rounded-md;
   }
 
+  /* display math: a wide equation scrolls on its own instead of stretching the page on a narrow screen */
+  .katex-display {
+    @apply overflow-x-auto overflow-y-hidden py-1;
+  }
+
   figcaption {
     @apply mt-2 text-center text-sm text-gray-500;
   }

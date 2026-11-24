@@ -2,11 +2,28 @@ import { RenderPlugin } from "@11ty/eleventy";
 import eleventyLucideicons from "@grimlink/eleventy-plugin-lucide-icons";
 import postcssPlugin from "@jgarber/eleventy-plugin-postcss";
 import { evaluate } from "@mdx-js/mdx";
+import markdownItKatex from "@vscode/markdown-it-katex";
 import yaml from "js-yaml";
+import katex from "katex";
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { renderToStaticMarkup } from "react-dom/server";
 import * as runtime from "react/jsx-runtime";
+import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+
+// LaTeX math in posts (.md and .mdx), rendered to HTML at build time by KaTeX: `$...$` inline, `$$ ... $$` for a display block.
+// A LaTeX error shows in red in the post instead of stopping the build. Add your own macros to `macros`.
+const katexOptions = {
+    throwOnError: false,
+    macros: {
+        "\\argmin": "\\operatorname*{arg\\,min}",
+        "\\argmax": "\\operatorname*{arg\\,max}"
+    }
+};
+
 
 
 const tailwindColors = ['red',
@@ -160,12 +177,18 @@ export default async function (eleventyConfig) {
     // Passthrough copy font(s)
     // eleventyConfig.addPassthroughCopy("assets/fonts");
 
-    // MDX support
+    // LaTeX math: KaTeX version for the stylesheet link in `base.njk`, and the math plugin for .md files
+    eleventyConfig.addGlobalData("katexVersion", katex.version);
+    eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(markdownItKatex.default ?? markdownItKatex, katexOptions));
+
+    // MDX support (with LaTeX math, heading ids, and GitHub Markdown: footnotes, tables, strikethrough, task lists)
     eleventyConfig.addExtension("mdx", {
         compile: async (str, inputPath) => {
             const { default: mdxContent } = await evaluate(str, {
                 ...runtime,
-                baseUrl: pathToFileURL(inputPath)
+                baseUrl: pathToFileURL(inputPath),
+                remarkPlugins: [remarkGfm, remarkMath],
+                rehypePlugins: [rehypeSlug, [rehypeKatex, katexOptions]]
             });
 
             return async function (data) {
