@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="530" viewBox="0 0 720 530" role="img" aria-labelledby="hpo-loop-title hpo-loop-desc">
+  <title id="hpo-loop-title">The hyperparameter optimisation loop, with cross-validation as the evaluation step</title>
+  <desc id="hpo-loop-desc">The tuning space and the tuner feed step 1, propose an HP configuration. The configuration is evaluated by cross-validation, using the data, the algorithm, the CV folds, and the measure: for each fold, 2. train the algorithm on the training set; 3. predict on the testing set and score the performance; 4. go to the next fold. 5. Average the performance across the CV folds. The score goes to the archive. From the archive, the tuner is updated and proposes the next configuration. The terminator checks the archive; when it stops the tuning, the result is the best HP configuration.</desc>
+
+  <!-- Adapted from Figure 4.1 in: Becker M, Schneider L, Fischer S (2024). Hyperparameter Optimization.
+       In: Bischl B, Sonabend R, Kotthoff L, Lang M (eds). Applied Machine Learning Using mlr3 in R. CRC Press.
+       https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html
+       The original is licensed CC BY-NC-SA 4.0, so this adaptation is also CC BY-NC-SA 4.0
+       (https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+       Hand-written SVG, edit as text. Colours are Tailwind values, as on the site:
+       gray = set by you, blue = tuning loop, dashed blue frame = cross-validation (steps 2 to 5).
+
+       Scrollytelling: each part of the diagram is a <g data-part="name"> group, with its box, its text, and the arrow into it.
+       In the post, a card that starts with {highlight="name ..."} shows these parts and dims the other parts (see README.md).
+       A part can have more than one name: the parts of the cross-validation are "cv train", "cv predict", ...,
+       so that {highlight="cv"} shows all of the cross-validation.
+       Do not put a data-part group inside another one: a dimmed group also dims the parts in it.
+       The legend is not in a data-part group, so it never dims.
+       Do not add a <style> element: in the page, its rules would apply to the whole post. -->
+  <defs>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#6b7280"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <g font-family="Montserrat, ui-sans-serif, system-ui, sans-serif" dominant-baseline="central">
+
+    <!-- cv: the cross-validation frame (the "Evaluate by Resampling" box of the original), and the arrow from step 1 into it.
+         It is first, so that the boxes and arrows in it are on top of it. -->
+    <g data-part="cv">
+      <rect x="128" y="160" width="322" height="232" rx="12" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="142" y="178" font-size="12" font-weight="600" fill="#1d4ed8">Evaluate by cross-validation</text>
+      <path d="M436 110 H289 V160" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+    </g>
+
+    <!-- set by you (gray): tuning space and tuner -->
+    <g data-part="tuning-space">
+      <rect x="391" y="12" width="120" height="40" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+      <text x="451" y="32" text-anchor="middle" font-size="13" fill="#1f2937">Tuning space</text>
+    </g>
+    <g data-part="tuner">
+      <rect x="531" y="12" width="120" height="40" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+      <text x="591" y="32" text-anchor="middle" font-size="13" fill="#1f2937">Tuner</text>
+    </g>
+
+    <!-- step 1, with the connector from the tuning space and the tuner -->
+    <g data-part="propose">
+      <path d="M451 52 V64 H591 V52" fill="none" stroke="#6b7280" stroke-width="1"/>
+      <path d="M521 64 V86" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+      <rect x="436" y="86" width="170" height="48" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+      <circle cx="456" cy="110" r="11" fill="#3b82f6"/>
+      <text x="456" y="110" text-anchor="middle" font-family="'Fira Mono', ui-monospace, monospace" font-size="12" font-weight="700" fill="#ffffff">1</text>
+      <g font-size="13" fill="#1f2937">
+        <text x="476" y="101">Propose HP</text>
+        <text x="476" y="119">configuration</text>
+      </g>
+    </g>
+
+    <!-- set by you (gray): the four inputs of the evaluation, and their connector into the cross-validation frame -->
+    <g data-part="inputs">
+      <path d="M98 207 H112 M98 253 H112 M98 299 H112 M98 345 H112 M112 207 V345" fill="none" stroke="#6b7280" stroke-width="1"/>
+      <path d="M112 276 H128" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+    </g>
+    <g data-part="inputs data">
+      <rect x="10" y="190" width="88" height="34" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+      <text x="54" y="207" text-anchor="middle" font-size="13" fill="#1f2937">Data</text>
+    </g>
+    <g data-part="inputs algorithm">
+      <rect x="10" y="236" width="88" height="34" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+      <text x="54" y="253" text-anchor="middle" font-size="13" fill="#1f2937">Algorithm</text>
+    </g>
+    <g data-part="inputs cv-folds">
+      <rect x="10" y="282" width="88" height="34" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+      <text x="54" y="299" text-anchor="middle" font-size="13" fill="#1f2937">CV folds</text>
+    </g>
+    <g data-part="inputs measure">
+      <rect x="10" y="328" width="88" height="34" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+      <text x="54" y="345" text-anchor="middle" font-size="13" fill="#1f2937">Measure</text>
+    </g>
+
+    <!-- steps 2 to 5, in the cross-validation frame (white boxes) -->
+    <g data-part="cv train">
+      <rect x="142" y="192" width="256" height="44" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+      <circle cx="162" cy="214" r="11" fill="#3b82f6"/>
+      <text x="162" y="214" text-anchor="middle" font-family="'Fira Mono', ui-monospace, monospace" font-size="12" font-weight="700" fill="#ffffff">2</text>
+      <g font-size="13" fill="#1f2937">
+        <text x="182" y="205">Train algorithm</text>
+        <text x="182" y="223">on training set</text>
+      </g>
+    </g>
+    <g data-part="cv predict">
+      <path d="M270 236 V260" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+      <rect x="142" y="260" width="256" height="44" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+      <circle cx="162" cy="282" r="11" fill="#3b82f6"/>
+      <text x="162" y="282" text-anchor="middle" font-family="'Fira Mono', ui-monospace, monospace" font-size="12" font-weight="700" fill="#ffffff">3</text>
+      <g font-size="13" fill="#1f2937">
+        <text x="182" y="273">Predict on testing set,</text>
+        <text x="182" y="291">score performance</text>
+      </g>
+    </g>
+    <!-- step 4: back to step 2 with the next fold -->
+    <g data-part="cv next-fold">
+      <path d="M398 282 H420 V214 H398" fill="none" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+      <circle cx="420" cy="248" r="11" fill="#3b82f6" stroke="#eff6ff" stroke-width="3"/>
+      <text x="420" y="248" text-anchor="middle" font-family="'Fira Mono', ui-monospace, monospace" font-size="12" font-weight="700" fill="#ffffff">4</text>
+      <text x="438" y="248" transform="rotate(90 438 248)" text-anchor="middle" font-size="11" fill="#1d4ed8">next fold</text>
+    </g>
+    <g data-part="cv average">
+      <path d="M270 304 V328" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+      <rect x="142" y="328" width="256" height="44" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+      <circle cx="162" cy="350" r="11" fill="#3b82f6"/>
+      <text x="162" y="350" text-anchor="middle" font-family="'Fira Mono', ui-monospace, monospace" font-size="12" font-weight="700" fill="#ffffff">5</text>
+      <g font-size="13" fill="#1f2937">
+        <text x="182" y="341">Average performance</text>
+        <text x="182" y="359">across CV folds</text>
+      </g>
+    </g>
+
+    <!-- tuning loop (blue): archive, update tuner (with the arrow back to step 1) -->
+    <g data-part="archive">
+      <path d="M398 350 H476" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+      <rect x="476" y="328" width="90" height="44" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+      <g text-anchor="middle" font-size="13" fill="#1f2937">
+        <text x="521" y="341">Archive</text>
+        <text x="521" y="359">of scores</text>
+      </g>
+    </g>
+    <g data-part="update">
+      <path d="M566 350 H602" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+      <path d="M652 328 V110 H606" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+      <rect x="602" y="328" width="100" height="44" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+      <g text-anchor="middle" font-size="13" fill="#1f2937">
+        <text x="652" y="341">Update</text>
+        <text x="652" y="359">tuner</text>
+      </g>
+    </g>
+
+    <!-- set by you (gray): terminator; then the result (blue) -->
+    <g data-part="terminator">
+      <path d="M521 372 V404" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+      <rect x="466" y="404" width="110" height="36" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+      <text x="521" y="422" text-anchor="middle" font-size="13" fill="#1f2937">Terminator</text>
+    </g>
+    <g data-part="result">
+      <path d="M521 440 V472" fill="none" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+      <text x="529" y="456" font-size="11" fill="#6b7280">stop</text>
+      <rect x="431" y="472" width="180" height="44" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+      <g text-anchor="middle" font-size="13" font-weight="600" fill="#1f2937">
+        <text x="521" y="485">Best HP</text>
+        <text x="521" y="503">configuration</text>
+      </g>
+    </g>
+
+    <!-- legend -->
+    <rect x="10" y="476" width="22" height="14" rx="3" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+    <text x="40" y="483" font-size="12" fill="#4b5563">Set by you</text>
+    <rect x="10" y="500" width="22" height="14" rx="3" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="40" y="507" font-size="12" fill="#4b5563">Tuning loop</text>
+  </g>
+</svg>

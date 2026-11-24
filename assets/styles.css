@@ -626,4 +626,33 @@ section {
   }
 }
 
+/* Bayesian optimisation demo (`<figure class="bo-demo">` in blog/mlhpo-bayesopt-pareto/index.md);
+   `bo-demo.js` in the same folder draws the plot and adds the controls and the status line before the caption */
+.bo-demo {
+  @apply mx-auto max-w-2xl;
+
+  svg {
+    @apply block h-auto w-full;
+  }
+}
+
+.bo-demo-controls {
+  @apply mt-2 flex items-center gap-2;
+
+  button {
+    @apply min-w-10 cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 hover:bg-gray-100 disabled:cursor-default disabled:opacity-40 disabled:hover:bg-white;
+  }
+
+  /* the width of "Pause", so that the button does not change size */
+  button:first-child {
+    @apply min-w-18;
+  }
+
+  input[type="range"] {
+    @apply flex-1 accent-blue-600;
+  }
+}
+
+.bo-demo-status {
+  @apply mt-1 text-center text-sm text-gray-600 tabular-nums;
 }
