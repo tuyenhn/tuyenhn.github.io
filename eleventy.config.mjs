@@ -13,6 +13,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import * as runtime from "react/jsx-runtime";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
+import scrolly from "./_config/scrolly.mjs";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
@@ -129,8 +130,8 @@ export default async function (eleventyConfig) {
         return [...collectionApi.getFilteredByGlob(blogPostGlob)].reverse();
     });
 
-    // Copy the images that sit next to the posts (thumbnails, figures)
-    eleventyConfig.addPassthroughCopy("blog/**/*.{png,jpg,jpeg,gif,webp,avif,svg}");
+    // Copy the images and scripts that sit next to the posts (thumbnails, figures, interactive demos)
+    eleventyConfig.addPassthroughCopy("blog/**/*.{png,jpg,jpeg,gif,webp,avif,svg,js}");
 
     // `date: Render` in front matter: the date of the build. It changes each time the site is rendered.
     eleventyConfig.addDateParsing((dateValue) => {
@@ -223,6 +224,13 @@ export default async function (eleventyConfig) {
     // Heading ids (`## HPO basics` becomes `<h2 id="hpo-basics" tabindex="-1">`), for links to a section and for the progress tracker
     // (`_includes/progress-tracker.njk`). Two headings with the same text get `id`, `id-1`, ... The .mdx posts get their ids from `rehype-slug` below.
     eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(markdownItAnchor, { slugify: eleventyConfig.getFilter("slugify") }));
+
+    // Scrollytelling in .md posts (`::: scrolly` ... `:::`): see `_config/scrolly.mjs`.
+    // `post.njk` loads Scrollama (copied from node_modules) and `_includes/scrolly.njk` only on posts that use it.
+    eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(scrolly));
+    eleventyConfig.addPassthroughCopy({ "node_modules/scrollama/build/scrollama.min.js": "assets/vendor/scrollama.min.js" });
+    // `{highlight}` puts the SVG files of the post into its page, so a change to an SVG must build the posts again
+    eleventyConfig.addWatchTarget("./blog/**/*.svg");
 
     // MDX support (with LaTeX math, heading ids, and GitHub Markdown: footnotes, tables, strikethrough, task lists)
     eleventyConfig.addExtension("mdx", {

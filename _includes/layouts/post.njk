@@ -52,6 +52,10 @@ isPost: true
 {% include "progress-tracker.njk" %}
 {# presentation mode: the chunk of the post at the middle of the window is clear, the other chunks are grey #}
 {% include "presentation-mode.njk" %}
+{# scrollytelling script, only on posts with a `::: scrolly` block #}
+{% if 'class="scrolly"' in content %}
+  {% include "scrolly.njk" %}
+{% endif %}
 {# footnote preview: with a mouse, hover over a footnote number to see the footnote in a box (move into the box to click its links);
    with the keyboard, focus the number; on a touch screen, the first tap shows the box and a second tap jumps to the footnote #}
 <script>

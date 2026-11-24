@@ -530,4 +530,100 @@ section {
   @apply opacity-25 grayscale print:opacity-100 print:grayscale-0;
 }
 
+/* scrollytelling (`::: scrolly` in a post; see `_config/scrolly.mjs`): the figures stay in view while the text cards scroll past them.
+   `.scrolly` is a size container, so the layout follows the width of the post, not of the window:
+   narrow (under 40rem), the text cards scroll over the figure; wide, the text is on the left and the figure on the right.
+   The heights use `svh`, not `vh`: on a phone, `vh` changes when the browser bar shows or hides, and Scrollama then measures again */
+.scrolly {
+  container-type: inline-size;
+  @apply grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-x-8;
+}
+
+/* the text and the figures share the first row: the text sets its height, and the figures stick to the top of the window */
+.scrolly-steps,
+.scrolly-figures {
+  @apply col-span-full row-start-1 min-w-0;
+}
+
+.scrolly-steps {
+  @apply relative z-1;
+}
+
+/* the steps touch each other; their padding puts one card in view at a time (Scrollama needs this, see `_config/scrolly.mjs`);
+   the larger outer padding keeps the figure in its place while the first and the last card are in the middle of the window */
+.scrolly-step {
+  @apply py-[35svh] first:pt-[50svh] last:pb-[50svh];
+}
+
+.scrolly-card {
+  @apply mx-auto max-w-md rounded-lg border border-gray-200 bg-white/90 p-4 shadow-md;
+
+  > * + * {
+    @apply mt-4;
+  }
+}
+
+/* narrow: the figure is at the top of the window, and the text card in the middle passes below it */
+.scrolly-figures {
+  @apply sticky top-0 grid h-svh grid-cols-1 items-start self-start pt-4;
+}
+
+/* all the figures are in the same place; only the active one shows */
+.scrolly-figure {
+  @apply col-start-1 row-start-1 min-w-0 pointer-events-none opacity-0 transition-opacity duration-500 motion-reduce:transition-none;
+
+  &.is-active {
+    @apply pointer-events-auto opacity-100;
+  }
+
+  > * + * {
+    @apply mt-4;
+  }
+
+  /* a tall image or code block gets smaller (or scrolls), so that it stays in the top half of the window */
+  img {
+    @apply max-h-[45svh] w-auto;
+  }
+
+  pre {
+    @apply max-h-[45svh] overflow-y-auto;
+  }
+
+  /* an SVG file that the build put into the page (for `{highlight}`): the full width, but not taller than an image;
+     in the page, the SVG text gets the page styles (an <img> does not), so `tracking-normal` cancels the `tracking-wide` of `body` */
+  svg[data-scrolly-svg] {
+    @apply block w-full h-auto max-h-[45svh] tracking-normal;
+  }
+
+  /* `{highlight="..."}`: the script dims the parts of the figure that the card does not name */
+  [data-part] {
+    @apply transition-opacity duration-500 motion-reduce:transition-none;
+  }
+
+  .is-dimmed {
+    @apply opacity-15;
+  }
+}
+
+/* wide: the text is beside the figure, so the figure is in the middle of the window and can be taller */
+@container (width >= 40rem) {
+  .scrolly-steps {
+    @apply col-span-1 col-start-1;
+  }
+
+  .scrolly-figures {
+    @apply col-span-1 col-start-2 items-center pt-0;
+  }
+
+  .scrolly-figure img,
+  .scrolly-figure pre,
+  .scrolly-figure svg[data-scrolly-svg] {
+    @apply max-h-[85svh];
+  }
+
+  .scrolly-card {
+    @apply mx-0 max-w-none rounded-none border-0 bg-transparent p-0 shadow-none;
+  }
+}
+
 }

@@ -1,0 +1,30 @@
+{# scrollytelling (`::: scrolly` in a post): the step at the middle of the window shows its figure;
+   the steps touch each other, so the figure changes when the middle of the window is halfway between two text cards.
+   A step with `data-highlight="a b"` (from `{highlight="a b"}` in the post) dims the parts of its figure (`[data-part]`)
+   that do not have the name `a` or `b`; a step without it shows the full figure.
+   The HTML comes from `_config/scrolly.mjs`, the layout and the dimming from `.scrolly` in `assets/styles.css`.
+   Scrollama is copied from node_modules into `/assets/vendor/` (see eleventy.config.mjs). #}
+<script src="/assets/vendor/scrollama.min.js"></script>
+<script>
+  (() => {
+    if (typeof scrollama !== "function") {
+      return;
+    }
+    document.querySelectorAll(".scrolly").forEach(section => {
+      const figures = section.querySelectorAll(".scrolly-figure");
+      const show = (index, highlight) => {
+        figures.forEach((figure, i) => figure.classList.toggle("is-active", i === index));
+        const names = (highlight ?? "").split(/\s+/).filter(Boolean);
+        figures[index]?.querySelectorAll("[data-part]").forEach(part => {
+          // `getAttribute`, because the parts are often SVG elements
+          const isNamed = part.getAttribute("data-part").split(/\s+/).some(name => names.includes(name));
+          part.classList.toggle("is-dimmed", names.length > 0 && !isNamed);
+        });
+      };
+      scrollama()
+        .setup({step: [...section.querySelectorAll(".scrolly-step")], offset: 0.5})
+        // scrolling down or up, and on page load: the step at the middle of the window sets the figure and its highlight
+        .onStepEnter(({element}) => show(Number(element.dataset.figure), element.dataset.highlight));
+    });
+  })();
+</script>
