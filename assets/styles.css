@@ -15,7 +15,7 @@ body {
 
 /* wrapper for tab bar + page card; top padding gives space above the tabs (the tab bar adds 0.5rem more) */
 #page {
-  @apply pt-10 md:pt-18 lg:mx-56 md:mx-24;
+  @apply pt-10 md:pt-18 lg:mx-44 md:mx-24;
 }
 
 /* page card; it sits above the back tabs, so its upward shadow falls on them */
@@ -253,33 +253,48 @@ section {
 
 /* rendered Markdown; Tailwind resets the browser styles, so the usual elements get their styles here */
 .post-body {
-  @apply text-lg leading-relaxed text-gray-800;
+  @apply text-base leading-relaxed text-gray-800;
 
   > * + * {
     @apply mt-4;
   }
 
+  /* headings step down in size from the post title (text-3xl / md:text-5xl): # > ## > ### > #### > #####;
+     the larger ones are medium weight, the smaller ones bold, so that each still stands out from the text */
+  /* `scroll-mt-8`: a link to a heading (from the progress tracker, or `#id` in the address) stops 2rem below the top of the window */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-post-heading;
+    @apply font-post-heading leading-tight scroll-mt-8;
   }
 
-  /* the post title is the page h1, so sections should use `##`; a `#` heading looks the same as `##` */
-  h1,
+  h1 {
+    @apply mt-12 font-medium text-2xl md:text-4xl;
+  }
+
   h2 {
-    @apply mt-10 text-2xl md:text-4xl;
+    @apply mt-10 font-medium text-xl md:text-3xl;
   }
 
   h3 {
-    @apply mt-8 font-bold text-xl md:text-2xl;
+    @apply mt-8 font-bold text-lg md:text-2xl;
   }
 
   h4 {
-    @apply mt-6 font-bold text-lg;
+    @apply mt-6 font-bold text-base md:text-xl;
+  }
+
+  h5,
+  h6 {
+    @apply mt-6 font-bold text-sm md:text-lg;
+  }
+
+  /* no extra space above the first element (often a heading), below the post title */
+  > :first-child {
+    @apply mt-0;
   }
 
   ul {
@@ -329,7 +344,7 @@ section {
 
   /* `block` + `overflow-x-auto` lets a wide table scroll on its own */
   table {
-    @apply block overflow-x-auto border-collapse text-base;
+    @apply block overflow-x-auto border-collapse text-sm;
   }
 
   th,

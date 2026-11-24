@@ -3,6 +3,7 @@ import eleventyLucideicons from "@grimlink/eleventy-plugin-lucide-icons";
 import postcssPlugin from "@jgarber/eleventy-plugin-postcss";
 import { evaluate } from "@mdx-js/mdx";
 import markdownItKatex from "@vscode/markdown-it-katex";
+import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
 import yaml from "js-yaml";
 import katex from "katex";
@@ -218,6 +219,10 @@ export default async function (eleventyConfig) {
         mdLib.use(markdownItFootnote);
         mdLib.renderer.rules.footnote_caption = (tokens, idx) => `${tokens[idx].meta.id + 1}`;
     });
+
+    // Heading ids (`## HPO basics` becomes `<h2 id="hpo-basics" tabindex="-1">`), for links to a section and for the progress tracker
+    // (`_includes/progress-tracker.njk`). Two headings with the same text get `id`, `id-1`, ... The .mdx posts get their ids from `rehype-slug` below.
+    eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(markdownItAnchor, { slugify: eleventyConfig.getFilter("slugify") }));
 
     // MDX support (with LaTeX math, heading ids, and GitHub Markdown: footnotes, tables, strikethrough, task lists)
     eleventyConfig.addExtension("mdx", {
