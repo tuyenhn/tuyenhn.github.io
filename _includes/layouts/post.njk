@@ -14,3 +14,139 @@ isPost: true
     {{ content | safe }}
   </div>
 </article>
+{# footnote preview: with a mouse, hover over a footnote number to see the footnote in a box (move into the box to click its links);
+   with the keyboard, focus the number; on a touch screen, the first tap shows the box and a second tap jumps to the footnote #}
+<script>
+  (() => {
+    // footnote numbers (.mdx: `data-footnote-ref`, .md: `sup.footnote-ref`)
+    const refSelector = ".post-body a[data-footnote-ref], .post-body .footnote-ref a";
+    const refs = document.querySelectorAll(refSelector);
+    if (refs.length === 0) {
+      return;
+    }
+
+    const popup = document.createElement("div");
+    popup.className = "footnote-popup";
+    popup.setAttribute("role", "tooltip");
+    popup.hidden = true;
+    document.querySelector(".post-body").append(popup);
+
+    let activeRef = null;
+    // how the box was opened: "mouse", "keyboard", or "touch"; only the same input closes it again
+    let openedBy = null;
+    let hideTimer = 0;
+    let lastPointerType = "mouse";
+
+    // below the number (above it if there is no room below), centred on it, and inside the window
+    const place = ref => {
+      const gap = 6;
+      const margin = 12;
+      const refBox = ref.getBoundingClientRect();
+      const parentBox = popup.offsetParent.getBoundingClientRect();
+      const width = popup.offsetWidth;
+      const height = popup.offsetHeight;
+      const viewportWidth = document.documentElement.clientWidth;
+      const left = Math.min(Math.max(refBox.left + refBox.width / 2 - width / 2, margin), viewportWidth - margin - width);
+      const below = refBox.bottom + gap;
+      const above = refBox.top - gap - height;
+      const top = below + height > window.innerHeight - margin && above > margin
+        ? above
+        : below;
+      popup.style.setProperty("--footnote-x", `${left - parentBox.left}px`);
+      popup.style.setProperty("--footnote-y", `${top - parentBox.top}px`);
+    };
+
+    const show = (ref, via) => {
+      clearTimeout(hideTimer);
+      openedBy = via;
+      const note = document.getElementById(decodeURIComponent(ref.hash.slice(1)));
+      if (!note) {
+        return;
+      }
+      if (activeRef !== ref) {
+        // copy of the footnote, without its "back to text" link and ids (they must stay unique)
+        const copy = note.cloneNode(true);
+        copy.querySelectorAll(".footnote-backref, [data-footnote-backref]").forEach(el => el.remove());
+        copy.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+        popup.replaceChildren(...copy.childNodes);
+        activeRef = ref;
+      }
+      popup.hidden = false;
+      place(ref);
+    };
+
+    const hide = () => {
+      clearTimeout(hideTimer);
+      popup.hidden = true;
+      activeRef = null;
+      openedBy = null;
+    };
+
+    // a short delay, so that the mouse can move from the number into the box
+    const hideSoon = () => {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(hide, 250);
+    };
+
+    refs.forEach(ref => {
+      ref.addEventListener("pointerdown", event => {
+        lastPointerType = event.pointerType;
+      });
+      ref.addEventListener("pointerenter", event => {
+        if (event.pointerType === "mouse") {
+          show(ref, "mouse");
+        }
+      });
+      ref.addEventListener("pointerleave", event => {
+        if (event.pointerType === "mouse" && openedBy === "mouse") {
+          hideSoon();
+        }
+      });
+      // keyboard focus only (a click also focuses the link, but not with :focus-visible)
+      ref.addEventListener("focus", () => {
+        if (ref.matches(":focus-visible")) {
+          show(ref, "keyboard");
+        }
+      });
+      ref.addEventListener("blur", () => {
+        if (openedBy === "keyboard") {
+          hideSoon();
+        }
+      });
+      ref.addEventListener("click", event => {
+        if (lastPointerType !== "mouse" && activeRef !== ref) {
+          // touch: the first tap shows the box
+          event.preventDefault();
+          show(ref, "touch");
+        } else {
+          // mouse click, Enter key, or a second tap: the link jumps to the footnote at the end, so the box is not needed
+          hide();
+        }
+        lastPointerType = "mouse";
+      });
+    });
+
+    popup.addEventListener("pointerenter", () => clearTimeout(hideTimer));
+    popup.addEventListener("pointerleave", event => {
+      if (event.pointerType === "mouse" && openedBy === "mouse") {
+        hideSoon();
+      }
+    });
+    // close with Escape, or with a click or tap outside the box
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        hide();
+      }
+    });
+    document.addEventListener("click", event => {
+      if (!popup.hidden && !popup.contains(event.target) && !event.target.closest(refSelector)) {
+        hide();
+      }
+    });
+    window.addEventListener("resize", () => {
+      if (activeRef) {
+        place(activeRef);
+      }
+    });
+  })();
+</script>

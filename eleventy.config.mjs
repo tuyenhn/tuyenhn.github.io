@@ -3,6 +3,7 @@ import eleventyLucideicons from "@grimlink/eleventy-plugin-lucide-icons";
 import postcssPlugin from "@jgarber/eleventy-plugin-postcss";
 import { evaluate } from "@mdx-js/mdx";
 import markdownItKatex from "@vscode/markdown-it-katex";
+import markdownItFootnote from "markdown-it-footnote";
 import yaml from "js-yaml";
 import katex from "katex";
 import { readFileSync } from "node:fs";
@@ -24,6 +25,31 @@ const katexOptions = {
     }
 };
 
+// For the blog list summary: put the TeX source (`$x^2$`) in place of each KaTeX output,
+// because the plain text of KaTeX HTML holds every symbol two or three times
+const katexToTex = (html) => {
+    const htmlPartStart = '<span class="katex-html"';
+    let out = "";
+    let pos = 0;
+    // remove the visual part (nested spans) of each formula
+    for (let start = html.indexOf(htmlPartStart); start !== -1; start = html.indexOf(htmlPartStart, pos)) {
+        out += html.slice(pos, start);
+        const spanTag = /<span\b|<\/span>/g;
+        spanTag.lastIndex = start;
+        let depth = 0;
+        pos = html.length;
+        for (let tag = spanTag.exec(html); tag; tag = spanTag.exec(html)) {
+            depth += tag[0] === "</span>" ? -1 : 1;
+            if (depth === 0) {
+                pos = spanTag.lastIndex;
+                break;
+            }
+        }
+    }
+    out += html.slice(pos);
+    // the MathML part keeps the TeX source in an <annotation>
+    return out.replace(/<math\b[\s\S]*?<annotation encoding="application\/x-tex">([\s\S]*?)<\/annotation>[\s\S]*?<\/math>/g, (_, tex) => `$${tex.trim()}$`);
+};
 
 
 const tailwindColors = ['red',
@@ -125,10 +151,15 @@ export default async function (eleventyConfig) {
         return /^(\/|[a-z][a-z0-9+.-]*:)/i.test(src) ? src : postUrl + src.replace(/^\.\//, "");
     });
 
-    // Summary for the blog list: the text of the paragraphs (no headings, code, or images), cut at a word.
+    // Summary for the blog list: the text of the paragraphs (no headings, code, images, or footnotes), cut at a word.
     // The output still holds the HTML entities of the rendered post, so use it with `| safe`.
     eleventyConfig.addFilter("excerpt", (html = "", maxLength = 300) => {
-        const text = [...html.matchAll(/<p(?:\s[^>]*)?>([\s\S]*?)<\/p>/g)]
+        const withoutFootnotes = katexToTex(html)
+            // the footnotes at the end (.md: `class="footnotes"`, .mdx: `data-footnotes`)
+            .replace(/<section\b[^>]*(?:class="footnotes"|data-footnotes)[^>]*>[\s\S]*?<\/section>/g, "")
+            // the footnote numbers in the text
+            .replace(/<sup\b[^>]*>\s*<a\b[^>]*(?:data-footnote-ref|href="#fn)[^>]*>[\s\S]*?<\/a>\s*<\/sup>/g, "");
+        const text = [...withoutFootnotes.matchAll(/<p(?:\s[^>]*)?>([\s\S]*?)<\/p>/g)]
             .map((match) => match[1].replace(/<[^>]+>/g, ""))
             .join(" ")
             .replace(/\s+/g, " ")
@@ -180,6 +211,13 @@ export default async function (eleventyConfig) {
     // LaTeX math: KaTeX version for the stylesheet link in `base.njk`, and the math plugin for .md files
     eleventyConfig.addGlobalData("katexVersion", katex.version);
     eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(markdownItKatex.default ?? markdownItKatex, katexOptions));
+
+    // Footnotes in .md files (`text[^1]` ... `[^1]: note`); the number shows as `1`, not `[1]` or `1:1`, the same as in .mdx.
+    // The script in `post.njk` shows a footnote in a box when the reader hovers over its number.
+    eleventyConfig.amendLibrary("md", (mdLib) => {
+        mdLib.use(markdownItFootnote);
+        mdLib.renderer.rules.footnote_caption = (tokens, idx) => `${tokens[idx].meta.id + 1}`;
+    });
 
     // MDX support (with LaTeX math, heading ids, and GitHub Markdown: footnotes, tables, strikethrough, task lists)
     eleventyConfig.addExtension("mdx", {
