@@ -10,7 +10,7 @@ eleventyImport:
     {% lucide "notebook-pen" %} Blog
   </h1>
   {% if collections.posts.length %}
-    {# one row per post: thumbnail, title, date, and the description (or the start of the post) #}
+    {# one row per post: thumbnail, title, date and reading time, and the description (or the start of the post) #}
     <div id="post-list">
       {% for post in collections.posts %}
         <a
@@ -30,9 +30,13 @@ eleventyImport:
           {% endif %}
           <div class="post-info">
             <h2>{{ post.data.title }}</h2>
-            <time datetime="{{ post.date | isoDate }}">{{
-              post.date | readableDate
-            }}</time>
+            <div class="post-facts">
+              <time datetime="{{ post.date | isoDate }}">{{
+                post.date | readableDate
+              }}</time>
+              <span aria-hidden="true">·</span>
+              <span>{{ post.content | readingTime }}</span>
+            </div>
             <p>
               {%- if post.data.description -%}
                 {{ post.data.description }}

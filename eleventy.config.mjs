@@ -121,6 +121,10 @@ const isoDateFormat = new Intl.DateTimeFormat("en-GB", {
     timeZone: siteTimeZone
 });
 
+// Reading time of a post ("11 min read"): the reading speed for the text, in words per minute.
+// 200 is for technical text with math and code; general non-fiction is approximately 240.
+const readingWordsPerMinute = 200;
+
 export default async function (eleventyConfig) {
     // Set ouput dir (`docs` for GH Pages)
     eleventyConfig.setOutputDirectory("docs");
@@ -168,6 +172,30 @@ export default async function (eleventyConfig) {
             .trim();
 
         return text.length > maxLength ? `${text.slice(0, maxLength).replace(/\s+\S*$/, "")}…` : text;
+    });
+
+    // Reading time for the post page and the blog list ("11 min read", at least 1 minute), from the rendered post:
+    //   - the words of all the text (also code, footnotes, and the text in <details> boxes), at `readingWordsPerMinute`;
+    //     a formula counts as the words of its TeX source;
+    //   - time to look at each figure (<img>, <svg>, <video>, <canvas>, <iframe>): 12 s for the first one,
+    //     1 s less for each next one, and 3 s for the 10th one and all after it. The text in an <svg> is not counted as words.
+    eleventyConfig.addFilter("readingTime", (html = "") => {
+        // remove the visual part of each formula: its <svg> elements are not figures, and its text repeats the symbols
+        const withTex = katexToTex(html);
+        const figureCount = (withTex.match(/<(?:img|svg|video|canvas|iframe)\b/g) ?? []).length;
+        const text = withTex
+            .replace(/<(script|style|template|svg)\b[\s\S]*?<\/\1>/g, " ")
+            .replace(/<[^>]+>/g, " ")
+            .replace(/&nbsp;|&#160;/g, " ");
+        const wordCount = (text.match(/\S+/g) ?? []).length;
+
+        let figureSeconds = 0;
+        for (let i = 0; i < figureCount; i++) {
+            figureSeconds += Math.max(12 - i, 3);
+        }
+
+        const minutes = Math.max(1, Math.round(wordCount / readingWordsPerMinute + figureSeconds / 60));
+        return `${minutes} min read`;
     });
 
     // Plugins

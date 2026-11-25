@@ -68,6 +68,16 @@ $$
 - A LaTeX error shows in red in the post; the build does not stop.
 - Shared macros (`\argmin`, `\argmax`) are in `katexOptions` in `eleventy.config.mjs`. Supported commands: <https://katex.org/docs/supported>.
 
+## Reading time of a post
+
+The post page and the blog list show the reading time next to the date (for example, "23 November 2026 · 11 min read"). You do not have to do anything in the post.
+
+- The build calculates it from the rendered post. It counts all the words of the text, also code, footnotes, and the text in `<details>` boxes, at 200 words per minute. A formula counts as the words of its TeX source.
+- Each figure (`<img>`, `<svg>`, `<video>`, `<canvas>`, `<iframe>`) adds time: 12 s for the first one, 1 s less for each next one, and 3 s for the 10th one and all after it. The text in an SVG figure is not counted as words.
+- The time is rounded to full minutes. The minimum is 1 minute.
+- To change the reading speed, change `readingWordsPerMinute` in `eleventy.config.mjs`.
+- The code: the `readingTime` filter in `eleventy.config.mjs`, the date line in `_includes/layouts/post.njk` and `blog/index.njk`, and `.post-facts` in `assets/styles.css`.
+
 ## Progress tracker in a post
 
 A post with two or more headings (`#`, `##`, `###`) shows a progress tracker at the right edge of the window, like the outline in Notion. You do not have to do anything in the post.

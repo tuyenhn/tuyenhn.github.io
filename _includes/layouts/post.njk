@@ -9,9 +9,14 @@ isPost: true
   <header class="post-header">
     <h1>{{ title }}</h1>
     <div class="post-meta">
-      <time datetime="{{ page.date | isoDate }}">{{
-        page.date | readableDate
-      }}</time>
+      {# date and reading time (`readingTime` filter in `eleventy.config.mjs`) #}
+      <div class="post-facts">
+        <time datetime="{{ page.date | isoDate }}">{{
+          page.date | readableDate
+        }}</time>
+        <span aria-hidden="true">·</span>
+        <span>{{ content | readingTime }}</span>
+      </div>
       {# reading mode switch: plain, or presentation (the chunk of the post at the middle of the window is clear, the other chunks are grey).
          Hidden until the script in `_includes/presentation-mode.njk` shows it, because it does nothing without JavaScript #}
       <div
