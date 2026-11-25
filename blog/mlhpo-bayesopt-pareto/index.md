@@ -40,7 +40,7 @@ Example: For a Decision Tree model, what are parameters and what are hyperparame
 
 Hyperparameter optimisation (HPO; also called hyperparameter tuning, hypertuning, model tuning) is the act of finding the best HP configuration for the given dataset to results in best model prediction performance and generalisability.
 
-HPO can be though of as a looping sequence, requiring:
+HPO can be thought of as a looping sequence, requiring:
 
 - **Tuner**: The tuning strategy
 - **Tuning space** or **search space**: The domain of the HPs
@@ -178,17 +178,29 @@ The point is not to find the utopia point, but to try and push the frontier towa
 
 ## Adversarial measures
 
-I previously mentioned that: "the gain in one measure would be a loss in the other measure". Well, this depends on the measures you choose. If you chose 2 measures that are both
+I previously mentioned that: "the gain in one measure would be a loss in the other measure". A Pareto Front only exist when improvement in one measure/objective results in a loss in the other. As such, these objectives are "adversarial" (or "conflicting", or "competing"). If you pick 2 objectives that are positively correlated, or do not have any conflict with each other, there will be a singular best solution and the Front would collapse to that single point.
 
 ## Pushing the frontier
 
+In the context of ML HPO, by setting up the tuning workflow with 2 adversarial measures, you can explore the Pareto Front of the effects of hyperparameters on (cross-validated) model performance. And, ideally, your HPO tuner should be pushing the frontier towards the utopia point.
+
+When the terminators stop the tuning loop, you then need to make a decision on which HP configuration. There are many options here, such as prioritising one metric over another then choose the solution that performs best for that metric. Another way is to calculate the Euclidean distance between each point in the Pareto Front and the utopia point, then choose the point with the least distance. Whatever way you choose, now, you have your "perfect" HP configuration before ML model training and testing.
+
 # Conclusions
 
-# Appendix
+- **Hyperparameters control _how_ a model learns.** Parameters are what the model learns from the data. The default HP values are a good starting point, not the answer.
+- **HPO is a loop.** A tuner proposes a configuration from the tuning space. Cross-validation scores it with your measure(s). The archive records it. The terminator decides when to stop. Always use CV, so the configuration you pick is not overfitted to one training set.
+- **Is it worth it? It depends.** Some algorithms gain little from tuning (Random Forest), and others gain more (SVM). The gain probably also depends on your dataset and task. Know how tunable your algorithm is before you spend the compute.
+- **Grid and random search are simple but blind.** They do not learn from earlier evaluations, and the number of configurations they need grows quickly as you add more HPs.
+- **Bayesian Optimisation searches with a model of the search.** A surrogate (usually a Gaussian Process) estimates the measure across the tuning space. The acquisition function trades exploration against exploitation to pick the next configuration. This matters most when each evaluation, a full CV run, is expensive.
+- **With more than one measure, there is no single best configuration.** If the measures conflict, you get a Pareto front instead. Pick measures that are adversarial. If they agree, the front collapses to one point, and one measure would have been enough.
+- **Push the front, then choose.** A multi-objective tuner (e.g. BO with EHVI) moves the front towards the utopia point. In the end, you still have to pick one configuration: give one measure priority, or take the point closest to utopia.
+
+# _Appendix_
 
 ## The initial design for BO
 
-The initial design is typically generated using Latin Hybercube Sampling (LHS) or Sobol sequence
+The initial design is typically generated using Latin Hypercube Sampling (LHS) or Sobol sequence
 
 LHS is near-random sampling for multidimensional space
 

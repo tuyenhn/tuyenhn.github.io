@@ -216,7 +216,7 @@
   <header class="post-header">
     <h1>Machine Learning Hyperparameter Tuning, Bayesian Optimisation, and the Pareto Front</h1>
     <div class="post-meta">
-      <time datetime="2026-11-24">24 November 2026</time>
+      <time datetime="2026-11-25">25 November 2026</time>
       
       <div
         class="reading-mode"
@@ -270,7 +270,7 @@
 <h1 id="hyperparameter-optimisation" tabindex="-1">Hyperparameter optimisation</h1>
 <h2 id="hpo-basics" tabindex="-1">HPO basics</h2>
 <p>Hyperparameter optimisation (HPO; also called hyperparameter tuning, hypertuning, model tuning) is the act of finding the best HP configuration for the given dataset to results in best model prediction performance and generalisability.</p>
-<p>HPO can be though of as a looping sequence, requiring:</p>
+<p>HPO can be thought of as a looping sequence, requiring:</p>
 <ul>
 <li><strong>Tuner</strong>: The tuning strategy</li>
 <li><strong>Tuning space</strong> or <strong>search space</strong>: The domain of the HPs</li>
@@ -544,12 +544,23 @@
 <p><img src="pareto.png" alt=""></p>
 <p>The point is not to find the utopia point, but to try and push the frontier towards that point.</p>
 <h2 id="adversarial-measures" tabindex="-1">Adversarial measures</h2>
-<p>I previously mentioned that: &quot;the gain in one measure would be a loss in the other measure&quot;. Well, this depends on the measures you choose. If you chose 2 measures that are both</p>
+<p>I previously mentioned that: &quot;the gain in one measure would be a loss in the other measure&quot;. A Pareto Front only exist when improvement in one measure/objective results in a loss in the other. As such, these objectives are &quot;adversarial&quot; (or &quot;conflicting&quot;, or &quot;competing&quot;). If you pick 2 objectives that are positively correlated, or do not have any conflict with each other, there will be a singular best solution and the Front would collapse to that single point.</p>
 <h2 id="pushing-the-frontier" tabindex="-1">Pushing the frontier</h2>
+<p>In the context of ML HPO, by setting up the tuning workflow with 2 adversarial measures, you can explore the Pareto Front of the effects of hyperparameters on (cross-validated) model performance. And, ideally, your HPO tuner should be pushing the frontier towards the utopia point.</p>
+<p>When the terminators stop the tuning loop, you then need to make a decision on which HP configuration. There are many options here, such as prioritising one metric over another then choose the solution that performs best for that metric. Another way is to calculate the Euclidean distance between each point in the Pareto Front and the utopia point, then choose the point with the least distance. Whatever way you choose, now, you have your &quot;perfect&quot; HP configuration before ML model training and testing.</p>
 <h1 id="conclusions" tabindex="-1">Conclusions</h1>
-<h1 id="appendix" tabindex="-1">Appendix</h1>
+<ul>
+<li><strong>Hyperparameters control <em>how</em> a model learns.</strong> Parameters are what the model learns from the data. The default HP values are a good starting point, not the answer.</li>
+<li><strong>HPO is a loop.</strong> A tuner proposes a configuration from the tuning space. Cross-validation scores it with your measure(s). The archive records it. The terminator decides when to stop. Always use CV, so the configuration you pick is not overfitted to one training set.</li>
+<li><strong>Is it worth it? It depends.</strong> Some algorithms gain little from tuning (Random Forest), and others gain more (SVM). The gain probably also depends on your dataset and task. Know how tunable your algorithm is before you spend the compute.</li>
+<li><strong>Grid and random search are simple but blind.</strong> They do not learn from earlier evaluations, and the number of configurations they need grows quickly as you add more HPs.</li>
+<li><strong>Bayesian Optimisation searches with a model of the search.</strong> A surrogate (usually a Gaussian Process) estimates the measure across the tuning space. The acquisition function trades exploration against exploitation to pick the next configuration. This matters most when each evaluation, a full CV run, is expensive.</li>
+<li><strong>With more than one measure, there is no single best configuration.</strong> If the measures conflict, you get a Pareto front instead. Pick measures that are adversarial. If they agree, the front collapses to one point, and one measure would have been enough.</li>
+<li><strong>Push the front, then choose.</strong> A multi-objective tuner (e.g. BO with EHVI) moves the front towards the utopia point. In the end, you still have to pick one configuration: give one measure priority, or take the point closest to utopia.</li>
+</ul>
+<h1 id="appendix" tabindex="-1"><em>Appendix</em></h1>
 <h2 id="the-initial-design-for-bo" tabindex="-1">The initial design for BO</h2>
-<p>The initial design is typically generated using Latin Hybercube Sampling (LHS) or Sobol sequence</p>
+<p>The initial design is typically generated using Latin Hypercube Sampling (LHS) or Sobol sequence</p>
 <p>LHS is near-random sampling for multidimensional space</p>
 <p>Sobol is a space-filling design, i.e. it tries to minimise empty space and clumping, generate a quasi-random (uniformly distributed) sequence</p>
 <hr>
